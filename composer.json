@@ -1,0 +1,20 @@
+{
+    "name": "ongoing-erp/empleados",
+    "description": "Modulo de empleados para apetit",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ongoing\\Empleados\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alejandro Vargas",
+            "email": "122814856+alejandro-vargas-m@users.noreply.github.com"
+        }
+    ],
+    "require": {},
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
