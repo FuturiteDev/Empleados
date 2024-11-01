@@ -59,7 +59,7 @@
                 <div class="modal-content">
                     <!--begin::Modal header-->
                     <div class="modal-header">
-                        <h2 class="fw-bold" v-text="Agregar empleado"></h2>
+                        <h2 class="fw-bold">Agregar empleado</h2>
                         <!--begin::Close-->
                         <div class="btn btn-close" data-bs-dismiss="modal"></div>
                         <!--end::Close-->
@@ -477,7 +477,7 @@
                         </div>
                         <div>
                             <button type="button" class="btn btn-primary" data-kt-stepper-action="submit" @click="saveEmpleado" :disabled="loading" :data-kt-indicator="loading ? 'on' : 'off'" v-show="stepper?.getNextStepIndex() == stepper?.getCurrentStepIndex()">
-                                <span class="indicator-label" v-text="Guardar"></span>
+                                <span class="indicator-label">Guardar</span>
                                 <span class="indicator-progress">Guardando <span class="spinner-border spinner-border-sm align-middle"></span></span>
                             </button>
                             <button type="button" class="btn btn-success" data-kt-stepper-action="next" v-show="stepper?.getNextStepIndex() != stepper?.getCurrentStepIndex()" :disabled="loading">Siguiente</button>
