@@ -26,6 +26,10 @@ class EmpleadosController extends Controller
         return view('empleados::listado', ['empleados' => $empleados]);
     }
 
+    public function detalle($id) {
+        return view('empleados::detalle');
+    }
+
     public function getAll(){
         try {
             $empleados = $this->empleados->where(['estatus' => 1])->get();
