@@ -5,44 +5,75 @@ namespace Ongoing\Empleados\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 use Log;
 
 use Ongoing\Empleados\Repositories\EmpleadosRepositoryEloquent;
+use Ongoing\Empleados\Repositories\AreasRepositoryEloquent;
+use Ongoing\Empleados\Repositories\PuestosRepositoryEloquent;
 
 
 
 class EmpleadosController extends Controller
 {
     protected $empleados;
+    protected $areas;
+    protected $puestos;
 
     public function __construct(
-        EmpleadosRepositoryEloquent $empleados
+        EmpleadosRepositoryEloquent $empleados,
+        AreasRepositoryEloquent $areas,
+        PuestosRepositoryEloquent $puestos
     ) {
         $this->empleados = $empleados;
+        $this->areas = $areas;
+        $this->puestos = $puestos;
     }
     
     function index() {
-        $empleados = $this->getAll();
-        return view('empleados::listado', ['empleados' => $empleados]);
+        Gate::authorize('access-granted', '/empleados');
+        $empleados = $this->getAll()->getData(true);
+        return view('empleados::listado', ['empleados' => $empleados['results']]);
     }
 
     public function detalle($id) {
         return view('empleados::detalle');
     }
 
+    /**
+     * Lista de empleados activos
+     * @return mixed|\Illuminate\Http\JsonResponse
+     */
     public function getAll(){
         try {
-            $empleados = $this->empleados->where(['estatus' => 1])->get();
+            $empleados = $this->empleados->findWhere(
+                ['estatus' => 1], 
+                [
+                    'no_empleado',
+                    'nombre',
+                    'apellidos',
+                    'alias',
+                    'rfc',
+                    'nss',
+                    'domicilio_ine',
+                    'domicilio_actual',
+                    'telefono',
+                    'celular',
+                    'email',
+                    'email_trabajo',
+                    'fecha_ingreso',
+                ]
+            );
 
             return response()->json([
-                'status' => true,
+                'success' => true,
                 'results' => $empleados
             ], 200);
         } catch (\Exception $e) {
             Log::info("EmpleadosController->getAll() | " . $e->getMessage(). " | " . $e->getLine());
             
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => "[ERROR] EmpleadosController->getAll() | " . $e->getMessage(). " | " . $e->getLine(),
                 'results' => null
             ], 500);
@@ -50,54 +81,63 @@ class EmpleadosController extends Controller
     }
 
     /**
-     * /api/sucursales/save
+     * /api/empleados/saveEmpleado
      *
-     * Guarda una sucursal
+     * Guarda un empleado
      *
      * @return JSON
      **/
-    public function save(Request $request){
+    public function saveEmpleado(Request $request){
         try {
 
-            $values = $request->only(['nombre', 'direccion']);
-            $values['estatus'] = 1;
+            
+            // Validaciones
+            $validator = Validator::make($request->all(), [
+                'no_empleado' => 'required',
+                'nombre' => 'required',
+                'apellidos' => 'required'
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Datos requeridos incompletos",
+                    "info" => $validator->errors(),
+                ]);
+            }
+            
+            $values = $request->except(['id']);
 
-            $nombreExistente = $this->empleados->where('nombre', $values['nombre'])
+            $empleadoExistente = $this->empleados->where('no_empleado', $values['no_empleado'])
                 ->where('estatus', 1)
-                ->where('id', '!=', $request->sucursal_id)
+                ->where('id', '!=', $request->id)
                 ->exists();
 
-            if ($nombreExistente) {
+            if ($empleadoExistente) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Ya existe una sucursal activa con ese nombre.',
-                    'results' => null
-                ], 400);
+                    'success' => false,
+                    'message' => 'El número de empleado ya se encuentra en uso.'
+                ]);
             }
 
-            if ($request->sucursal_id) {
-                $sucursal = $this->empleados->find($request->sucursal_id);
-                if (!$sucursal) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Sucursal no encontrada.',
-                        'results' => null
-                    ], 404);
-                }
-                $sucursal->update($values);
+            if ($request->id) {
+                $empleado = $this->empleados->find($request->id);
+                $empleado->update($values);
             } else {
-                $sucursal = $this->empleados->create($values);
+                $empleado = $this->empleados->create($values);
             }
+
+            $empleados = $this->getAll()->getData(true);
             return response()->json([
-                'status' => true,
-                'message' => "Sucursal guardada.",
-                'results' => $this->empleados->where(['estatus' => 1])->get()
+                'success' => true,
+                'message' => "Empleado guardado.",
+                'results' => $empleados['results']
             ], 200);
         } catch (\Exception $e) {
             Log::info("EmpleadosController->save() | " . $e->getMessage(). " | " . $e->getLine());
             
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => "[ERROR] EmpleadosController->save() | " . $e->getMessage(). " | " . $e->getLine(),
                 'results' => null
             ], 500);
@@ -105,9 +145,9 @@ class EmpleadosController extends Controller
     }
 
     /**
-     * /api/sucursales/delete
+     * /api/empleados/delete
      *
-     * Deshabilita una sucursal
+     * Deshabilita un empleado
      *
      * @return JSON
      **/
@@ -115,17 +155,21 @@ class EmpleadosController extends Controller
     {
         try {
 
-            $this->empleados->where('id', $request->sucursal_id)->update(['estatus' => 0]);
+            $empleado = $this->empleados->find($request->empleado_id);
+            $empleado->estatus = 0;
+            $empleado->save();
+
+            $empleados = $this->getAll()->getData(true);
 
             return response()->json([
-                'status' => true,
-                'message' => "Sucursal eliminada.",
-                'results' => $this->empleados->where('estatus', 1)->get()
+                'success' => true,
+                'message' => "Empleado eliminado.",
+                'empleados' => $empleados['results']
             ], 200);
         } catch (\Exception $e) {
             Log::info("EmpleadosController->delete() | " . $e->getMessage() . " | " . $e->getLine());
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => "[ERROR] EmpleadosController->delete() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);

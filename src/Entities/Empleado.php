@@ -9,7 +9,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 /**
  * Class Empleado.
  *
- * @package namespace App\Entities;
+ * @package namespace Ongoing\Empleados\Entities;
  */
 class Empleado extends Model implements Transformable
 {
@@ -20,6 +20,37 @@ class Empleado extends Model implements Transformable
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'direccion', 'estatus'];
+    protected $fillable = [
+        'no_empleado',
+        'nombre',
+        'apellidos',
+        'alias',
+        'rfc',
+        'curp',
+        'ine',
+        'nss',
+        'domicilio_ine',
+        'domicilio_actual',
+        'domicilio_fiscal',
+        'telefono',
+        'celular',
+        'email',
+        'email_trabajo',
+        'fecha_nacimiento',
+        'fecha_ingreso',
+        'fecha_alta_imss',
+    ];
+
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['nombre_completo'];
+
+    public function getNombreCompletoAttribute(){
+        return $this->nombre . ' ' . $this->apellidos;
+    }
 
 }

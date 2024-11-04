@@ -1,19 +1,19 @@
 <?php
 
-namespace Ongoing\Empleados\Repositories;
+namespace App\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Ongoing\Empleados\Repositories\EmpleadosRepository;
-use Ongoing\Empleados\Entities\Empleado;
-
+use Ongoing\Empleados\Repositories\EmpleadoNominaRepository;
+use Ongoing\Empleados\Entities\EmpleadoNomina;
+use Ongoing\Empleados\Validators\EmpleadoNominaValidator;
 
 /**
- * Class EmpleadosRepositoryEloquent.
+ * Class EmpleadoNominaRepositoryEloquent.
  *
  * @package namespace Ongoing\Empleados\Repositories;
  */
-class EmpleadosRepositoryEloquent extends BaseRepository implements EmpleadosRepository
+class EmpleadoNominaRepositoryEloquent extends BaseRepository implements EmpleadoNominaRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +22,7 @@ class EmpleadosRepositoryEloquent extends BaseRepository implements EmpleadosRep
      */
     public function model()
     {
-        return Empleado::class;
+        return EmpleadoNomina::class;
     }
 
     

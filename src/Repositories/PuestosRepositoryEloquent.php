@@ -4,16 +4,16 @@ namespace Ongoing\Empleados\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Ongoing\Empleados\Repositories\EmpleadosRepository;
-use Ongoing\Empleados\Entities\Empleado;
+use Ongoing\Empleados\Repositories\PuestosRepository;
+use Ongoing\Empleados\Entities\Puesto;
 
 
 /**
- * Class EmpleadosRepositoryEloquent.
+ * Class PuestoRepositoryEloquent.
  *
  * @package namespace Ongoing\Empleados\Repositories;
  */
-class EmpleadosRepositoryEloquent extends BaseRepository implements EmpleadosRepository
+class PuestosRepositoryEloquent extends BaseRepository implements PuestosRepository
 {
     /**
      * Specify Model class name
@@ -22,7 +22,7 @@ class EmpleadosRepositoryEloquent extends BaseRepository implements EmpleadosRep
      */
     public function model()
     {
-        return Empleado::class;
+        return Puesto::class;
     }
 
     

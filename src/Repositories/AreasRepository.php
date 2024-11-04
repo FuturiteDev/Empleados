@@ -5,11 +5,11 @@ namespace Ongoing\Empleados\Repositories;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
 /**
- * Interface EmpleadosRepository.
+ * Interface AreasRepository.
  *
  * @package namespace Ongoing\Empleados\Repositories;
  */
-interface EmpleadosRepository extends RepositoryInterface
+interface AreasRepository extends RepositoryInterface
 {
     //
 }
