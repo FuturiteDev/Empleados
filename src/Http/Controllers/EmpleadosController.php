@@ -49,6 +49,7 @@ class EmpleadosController extends Controller
             $empleados = $this->empleados->findWhere(
                 ['estatus' => 1], 
                 [
+                    'id',
                     'no_empleado',
                     'nombre',
                     'apellidos',
