@@ -16,6 +16,8 @@ class EmpleadoPuesto extends Model implements Transformable
 {
     use TransformableTrait;
 
+    protected $table = 'empleado_puesto';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -38,5 +40,23 @@ class EmpleadoPuesto extends Model implements Transformable
     protected $casts = [
         'horario' => AsArrayObject::class
     ];
+
+    protected $with = ['area', 'puesto', 'sucursal', 'jefe'];
+
+    public function area(){
+        return $this->belongsTo(Area::class);
+    }
+
+    public function puesto(){
+        return $this->belongsTo(Puesto::class);
+    }
+
+    public function sucursal(){
+        return $this->belongsTo(\Ongoing\Sucursales\Entities\Sucursales::class);
+    }
+
+    public function jefe(){
+        return $this->belongsTo(Empleado::class, 'jefe_id', 'id')->select("id", "no_empleado", "nombre", "apellidos", "alias");
+    }
 
 }

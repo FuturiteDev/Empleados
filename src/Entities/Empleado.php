@@ -53,4 +53,8 @@ class Empleado extends Model implements Transformable
         return $this->nombre . ' ' . $this->apellidos;
     }
 
+    public function infoPuesto(){
+        return $this->hasOne(EmpleadoPuesto::class);
+    }
+
 }

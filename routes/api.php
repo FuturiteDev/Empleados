@@ -18,5 +18,7 @@ use Ongoing\Empleados\Http\Controllers\EmpleadosController;
 Route::prefix('empleados')->group(function () {
     Route::get('/all', [EmpleadosController::class, 'getAll'])->name('get_all_empleados');
     Route::post('/save-empleado', [EmpleadosController::class, 'saveEmpleado'])->name('save-empleados');
+    Route::post('/save-puesto-empleado', [EmpleadosController::class, 'savePuestoEmpleado'])->name('save-puesto-empleado');
+    Route::post('/save-nomina-empleado', [EmpleadosController::class, 'saveNominaEmpleado'])->name('save-nomina-empleado');
     Route::post('/delete', [EmpleadosController::class, 'delete'])->name('delete_empleados');
 });

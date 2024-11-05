@@ -134,11 +134,11 @@ class EmpleadosController extends Controller
                 'results' => $empleados['results']
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->save() | " . $e->getMessage(). " | " . $e->getLine());
+            Log::info("EmpleadosController->saveEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
             
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->save() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->saveEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -175,4 +175,65 @@ class EmpleadosController extends Controller
             ], 500);
         }
     }
+
+
+    /**
+     * /api/empleados/savePuestoEmpleado
+     *
+     * Guarda un empleado
+     *
+     * @return JSON
+     **/
+    public function savePuestoEmpleado(Request $request){
+        try {
+
+            $empleado = $this->empleados->with('infoPuesto')->find($request->empleado_id);
+            
+            $data = [
+                'area_id' => null,
+                'puesto_id' => null,
+                'jefe_id' => $request->jefe_id,
+                'sucursal_id' => $request->sucursal_id,
+                'horario' => $request->horario ?? [],
+            ];
+
+            if($request->area_id){
+                $data['area_id'] = $request->area_id;
+            }elseif($request->area){
+                $area = $this->areas->firstOrCreate(['nombre' => $request->area]);
+                $data['area_id'] = $area->id;
+            }
+
+            if($request->puesto_id){
+                $data['puesto_id'] = $request->puesto_id;
+            }elseif($request->puesto){
+                $puesto = $this->puestos->firstOrCreate(['nombre' => $request->puesto]);
+                $data['puesto_id'] = $puesto->id;
+            }
+            
+            if(empty($empleado->infoPuesto)){
+                $empleado->infoPuesto()->create($data);
+                $empleado->load('infoPuesto');
+            }else{
+                $empleado->infoPuesto->fill($data);
+                $empleado->infoPuesto->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Empleado guardado.",
+                'infoPuesto' => $empleado->infoPuesto
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->savePuestoEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->savePuestoEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+
+
 }
