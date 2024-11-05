@@ -14,7 +14,6 @@
             "email": "122814856+alejandro-vargas-m@users.noreply.github.com"
         }
     ],
-    "require": {},
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {

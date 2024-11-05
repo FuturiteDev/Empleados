@@ -9,12 +9,12 @@ class ComposerStaticInit50578d3309f40d512b817e4544e5a85b
     public static $prefixLengthsPsr4 = array (
         'O' => 
         array (
-            'OngoingErp\\Empleados\\' => 21,
+            'Ongoing\\Empleados\\' => 18,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'OngoingErp\\Empleados\\' => 
+        'Ongoing\\Empleados\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
