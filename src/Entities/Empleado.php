@@ -49,6 +49,7 @@ class Empleado extends Model implements Transformable
      */
     protected $appends = ['nombre_completo'];
 
+    
     public function getNombreCompletoAttribute(){
         return $this->nombre . ' ' . $this->apellidos;
     }
@@ -57,4 +58,7 @@ class Empleado extends Model implements Transformable
         return $this->hasOne(EmpleadoPuesto::class);
     }
 
+    public function infoNomina(){
+        return $this->hasOne(EmpleadoNomina::class);
+    }
 }

@@ -221,7 +221,7 @@ class EmpleadosController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => "Empleado guardado.",
+                'message' => "Información guardada con éxito.",
                 'infoPuesto' => $empleado->infoPuesto
             ], 200);
         } catch (\Exception $e) {
@@ -235,5 +235,42 @@ class EmpleadosController extends Controller
         }
     }
 
+    /**
+     * /api/empleados/saveNominaEmpleado
+     *
+     * Guarda un empleado
+     *
+     * @return JSON
+     **/
+    public function saveNominaEmpleado(Request $request){
+        try {
+
+            $empleado = $this->empleados->with('infoNomina')->find($request->empleado_id);
+            
+            $data = $request->except(['empleado_id']);
+            
+            if(empty($empleado->infoNomina)){
+                $empleado->infoNomina()->create($data);
+                $empleado->load('infoNomina');
+            }else{
+                $empleado->infoNomina->fill($data);
+                $empleado->infoNomina->save();
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Información guardada con éxito.",
+                'infoNomina' => $empleado->infoNomina
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->saveNominaEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->saveNominaEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
 
 }
