@@ -274,4 +274,59 @@ class EmpleadosController extends Controller
         }
     }
 
+
+    /**
+     * /api/empleados/saveFileEmpleado
+     *
+     * Guarda un empleado
+     *
+     * @return JSON
+     **/
+    public function saveFileEmpleado(Request $request){
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'empleado_id' => 'required',
+                'categoria' => 'required',
+                'slug' => 'required',
+                'archivo' => 'required|file'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Datos requeridos incompletos",
+                    "info" => $validator->errors(),
+                ]);
+            }
+
+            $data = $request->only('categoria', 'slug');
+            $empleado = $this->empleados->find($request->empleado_id);
+
+            $path = $request->archivo->store('archivos/empleado_'.$empleado->id);
+            $data['archivo'] = array(
+                'nombre' => $request->archivo->getClientOriginalName(),
+                'extension' => $request->archivo->getClientOriginalExtension(),
+                'path' => $path
+            );
+
+            $empleado->archivos()->create($data);
+            $empleado->load('archivos');
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Archivo guardado con éxito.",
+                'archivos' => $empleado->archivos
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->saveFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->saveFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+
 }

@@ -61,4 +61,8 @@ class Empleado extends Model implements Transformable
     public function infoNomina(){
         return $this->hasOne(EmpleadoNomina::class);
     }
+
+    public function archivos(){
+        return $this->hasMany(Empleadoarchivos::class)->where('estatus', 1);
+    }
 }

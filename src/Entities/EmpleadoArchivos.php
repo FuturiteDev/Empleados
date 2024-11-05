@@ -5,6 +5,7 @@ namespace Ongoing\Empleados\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 /**
  * Class EmpleadoArchivos.
@@ -27,4 +28,13 @@ class EmpleadoArchivos extends Model implements Transformable
         'archivo',
     ];
 
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'archivo' => AsArrayObject::class
+    ];
 }
