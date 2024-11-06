@@ -23,4 +23,6 @@ Route::prefix('empleados')->group(function () {
     Route::post('/save-file-empleado', [EmpleadosController::class, 'saveFileEmpleado'])->name('save-file-empleado');
     Route::post('/delete-file-empleado', [EmpleadosController::class, 'deleteFileEmpleado'])->name('delete-file-empleado');
     Route::post('/delete', [EmpleadosController::class, 'delete'])->name('delete_empleados');
+    Route::get('/areas', [EmpleadosController::class, 'getAreas'])->name('get_areas_empleados');
+    Route::get('/puestos', [EmpleadosController::class, 'getPuestos'])->name('get_puestos_empleados');
 });

@@ -22,4 +22,7 @@ class Area extends Model implements Transformable
      */
     protected $fillable = ['nombre'];
 
+
+    protected $hidden = ['created_at', 'updated_at'];
+
 }

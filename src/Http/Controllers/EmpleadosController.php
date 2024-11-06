@@ -368,4 +368,54 @@ class EmpleadosController extends Controller
     }
 
 
+    /**
+     * /api/empleados/getAreas
+     *
+     * Guarda un empleado
+     *
+     * @return JSON
+     **/
+    public function getAreas(){
+        try {
+
+            return response()->json([
+                'success' => true,
+                'results' => $this->areas->findByField('estatus', 1)
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->getAreas() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->getAreas() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+
+    /**
+     * /api/empleados/getPuestos
+     *
+     * Guarda un empleado
+     *
+     * @return JSON
+     **/
+    public function getPuestos(){
+        try {
+
+            return response()->json([
+                'success' => true,
+                'results' => $this->puestos->findByField('estatus', 1)
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+
 }
