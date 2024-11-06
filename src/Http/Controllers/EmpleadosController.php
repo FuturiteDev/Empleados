@@ -37,7 +37,10 @@ class EmpleadosController extends Controller
     }
 
     public function detalle($id) {
-        return view('empleados::detalle');
+
+        $empleado = $this->empleados->with(['infoPuesto', 'infoNomina', 'archivos'])->find($id);
+
+        return view('empleados::detalle', ['empleado' => $empleado]);
     }
 
     /**
