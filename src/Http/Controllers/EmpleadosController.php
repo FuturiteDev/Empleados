@@ -329,4 +329,40 @@ class EmpleadosController extends Controller
         }
     }
 
+
+    /**
+     * /api/empleados/deleteFileEmpleado
+     *
+     * Guarda un empleado
+     *
+     * @return JSON
+     **/
+    public function deleteFileEmpleado(Request $request){
+        try {
+
+            $empleado = $this->empleados->find($request->empleado_id);
+            $archivo = $empleado->archivos()->find($request->archivo_id);
+            if($archivo){
+                $archivo->estatus = 0;
+                $archivo->save();
+            }
+
+            $empleado->load('archivos');
+            return response()->json([
+                'success' => true,
+                'message' => "Archivo eliminado con éxito.",
+                'archivos' => $empleado->archivos
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->deleteFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->deleteFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+
+
 }
