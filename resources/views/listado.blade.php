@@ -55,7 +55,7 @@
                     <!--begin::Table-->
                     <v-client-table v-model="empleados" :columns="columns" :options="options">
                         <div slot="acciones" slot-scope="props">
-                            <a type="button" title="Ver detalle" class="btn btn-icon btn-sm btn-success" :href="`/empleados/detalle/${props.row.id}`" target="_blank"><i class="fas fa-eye"></i></a>
+                            <a type="button" title="Ver detalle" class="btn btn-icon btn-sm btn-success" :href="`/empleados/detalle/${props.row.id}`"><i class="fas fa-eye"></i></a>
                             <button type="button" title="Eliminar" class="btn btn-icon btn-sm btn-danger" @click="deleteEmpleado(props.row.id)" :data-kt-indicator="props.row.eliminando ? 'on' : 'off'">
                                 <span class="indicator-label"><i class="fas fa-trash-alt"></i></span>
                                 <span class="indicator-progress"><span class="spinner-border spinner-border-sm align-middle"></span></span>
