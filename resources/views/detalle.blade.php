@@ -320,11 +320,11 @@
                             <div class="row" v-if="!isEditPuesto">
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Área de la empresa</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.area.nombre ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.area?.nombre ?? ""]]</div>
                                 </div>
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Nombre del Puesto</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.puesto.nombre ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.puesto?.nombre ?? ""]]</div>
                                 </div>
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Jefe directo</div>
