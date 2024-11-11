@@ -35,7 +35,9 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">Empleados</li>
+                            <li class="breadcrumb-item text-muted">
+                                <a href="{{ route('empleados.list') }}" class="text-muted text-hover-primary">Empleados</a>
+                            </li>
                             <!--end::Item-->
                         </ul>
                         <!--end::Breadcrumb-->
@@ -67,7 +69,7 @@
 							<button class="nav-link" id="puesto-tab" data-bs-toggle="tab" data-bs-target="#puesto" type="button" role="tab" aria-controls="puesto" aria-selected="false">Puesto</button>
 						</li>
 						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="nomina-tab" data-bs-toggle="tab" data-bs-target="#nomina" type="button" role="tab" aria-controls="nomina" aria-selected="false">Nomina</button>
+							<button class="nav-link" id="nomina-tab" data-bs-toggle="tab" data-bs-target="#nomina" type="button" role="tab" aria-controls="nomina" aria-selected="false">Nómina</button>
 						</li>
                         <li class="nav-item" role="presentation">
 							<button class="nav-link" id="papeleria-tab" data-bs-toggle="tab" data-bs-target="#papeleria" type="button" role="tab" aria-controls="papeleria" aria-selected="false">Papelería</button>
@@ -172,6 +174,10 @@
                                 </div>
                                 <div class="separator mt-3 mb-5 border-gray-300"></div>
                                 <h3 class="mb-5">Banco</h3>
+                                <div class="col-6 mb-5">
+                                    <div class="form-label text-dark mb-0">Banco</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.banco ?? ""]]</div>
+                                </div>
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Número de cuenta</div>
                                     <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.no_cuenta ?? ""]]</div>
@@ -288,10 +294,14 @@
                                     </div>
                                     <div class="col-6 mb-5 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Dirección fiscal</label>
-                                        <input type="text" class="form-control" v-model="info_model.domicilio_fiscal" name="domicilio_fiscal"/>
+                                        <textarea rows="5" class="form-control" v-model="info_model.domicilio_fiscal" name="domicilio_fiscal" style="resize:none;"></textarea>
                                     </div>
                                     <div class="separator mt-3 mb-5 border-gray-300"></div>
                                     <h3 class="mb-5">Banco</h3>
+                                    <div class="col-6 mb-5 fv-row">
+                                        <label class="form-label text-dark mb-0 ms-2">Banco</label>
+                                        <input type="text" class="form-control" v-model="info_model.banco" name="banco"/>
+                                    </div>
                                     <div class="col-6 mb-5 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Número de cuenta</label>
                                         <input type="text" class="form-control" v-model="info_model.no_cuenta" name="no_cuenta"/>
@@ -537,6 +547,18 @@
                                     <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_cursos_personal | currency]]</div>
                                 </div>
                                 <div class="col-6 mb-5">
+                                    <div class="form-label text-dark mb-0">Prima Vacacional</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_prima_vacacional | currency]]</div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                    <div class="form-label text-dark mb-0">Aguinaldo</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_aguinaldo | currency]]</div>
+                                </div>
+                                <div class="col-6 mb-5">
+                                    <div class="form-label text-dark mb-0">PTU</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_ptu | currency]]</div>
+                                </div>
+                                <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Otros</div>
                                     <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_otros | currency]]</div>
                                 </div>
@@ -624,6 +646,18 @@
                                     <div class="col-6 mb-5 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Curso Desarrollo Personal</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_cursos_personal" name="cursos_personal"></v-currency>
+                                    </div>
+                                    <div class="col-6 mb-5 fv-row">
+                                        <label class="form-label text-dark mb-0 ms-2">Prima Vacacional</label>
+                                        <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_prima_vacacional" name="prima_vacacional"></v-currency>
+                                    </div>
+                                    <div class="col-6 mb-5 fv-row">
+                                        <label class="form-label text-dark mb-0 ms-2">Aguinaldo</label>
+                                        <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_aguinaldo" name="aguinaldo"></v-currency>
+                                    </div>
+                                    <div class="col-6 mb-5 fv-row">
+                                        <label class="form-label text-dark mb-0 ms-2">PTU</label>
+                                        <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_ptu" name="ptu"></v-currency>
                                     </div>
                                     <div class="col-6 mb-5 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Otros</label>
@@ -859,6 +893,7 @@
                     fecha_nacimiento: null,
                     rfc: null,
                     domicilio_fiscal: null,
+                    banco: null,
                     no_cuenta: null,
                     no_clabe: null,
                     no_tarjeta: null,
@@ -1079,60 +1114,8 @@
                     })
                 });
 
-                vm.tag_puesto = new Tagify(document.querySelector("#tag_puesto"), {
-                    enforceWhitelist: false,
-                    whitelist: [],
-                    dropdown: {
-                        enabled: 1,
-                    },
-                    callbacks: {
-                        add: e => {},
-                        remove: e => {},
-                        change: e => {
-                            let tags = JSON.parse(e.detail.value)[0];
-                            if(tags.value == '') {
-                                vm.puesto_model.puesto_id = null;
-                                vm.puesto_model.puesto = null;
-                            } else {
-                                if(tags.id && tags.id!=''){
-                                    vm.puesto_model.puesto_id = tags.id;
-                                    vm.puesto_model.puesto = null;
-                                } else {
-                                    vm.puesto_model.puesto_id = null;
-                                    vm.puesto_model.puesto = tags.value;
-                                }
-                            }
-                        },
-                    }
-                });
-
-                vm.tag_area = new Tagify(document.querySelector("#tag_area"), {
-                    enforceWhitelist: false,
-                    whitelist: [],
-                    dropdown: {
-                        enabled: 1,
-                    },
-                    callbacks: {
-                        add: e => {},
-                        remove: e => {},
-                        change: e => {
-                            let tags = JSON.parse(e.detail.value)[0];
-                            if(tags.value == '') {
-                                vm.puesto_model.area_id = null;
-                                vm.puesto_model.area = null;
-                            } else {
-                                if(tags.id && tags.id!=''){
-                                    vm.puesto_model.area_id = tags.id;
-                                    vm.puesto_model.area = null;
-                                } else {
-                                    vm.puesto_model.area_id = null;
-                                    vm.puesto_model.area = tags.value;
-                                }
-                            }
-                        },
-                    }
-                });
-
+                vm.initPickers();
+                vm.initformValidate();
                 vm.getSucursales();
                 vm.getEmpleados();
                 vm.getPuestos();
@@ -1140,6 +1123,18 @@
                 vm.formatFilesList();
             },
             methods: {
+                // Init
+                initPickers(){
+                    $("#fecha_nacimiento").flatpickr({
+                        dateFormat: "Y-m-d"
+                    });
+                    $("#fecha_ingreso").flatpickr({
+                        dateFormat: "Y-m-d"
+                    });
+                    $("#fecha_alta_imss").flatpickr({
+                        dateFormat: "Y-m-d"
+                    });
+                },
                 initformValidate() {
                     let genValidator = {
                         validators: {
@@ -1219,6 +1214,7 @@
                         }
                     );
                 },
+                // Get Request
                 getEmpleados() {
                     let vm = this;
                     $.get(
@@ -1249,8 +1245,43 @@
                         '/api/empleados/all',
                         res => {
                             vm.puestos = res.results;
+                            vm.tag_puesto = new Tagify(document.querySelector("#tag_puesto"), {
+                                enforceWhitelist: false,
+                                whitelist: res.results.map(item => ({value: item.nombre, id: item.id})),
+                                maxTags: 1,
+                                dropdown: {
+                                    enabled: 1,
+                                    maxItems: 10,
+                                },
+                                callbacks: {
+                                    change: e => {
+                                        if(e.detail.value != ''){
+                                            let tags = JSON.parse(e.detail.value)[0];
+                                            if(tags.value == '') {
+                                                vm.puesto_model.puesto_id = null;
+                                                vm.puesto_model.puesto = null;
+                                            } else {
+                                                if(tags.id && tags.id!=''){
+                                                    vm.puesto_model.puesto_id = tags.id;
+                                                    vm.puesto_model.puesto = null;
+                                                } else {
+                                                    vm.puesto_model.puesto_id = null;
+                                                    vm.puesto_model.puesto = tags.value;
+                                                }
+                                            }
+                                        } else {
+                                            vm.puesto_model.puesto_id = null;
+                                            vm.puesto_model.puesto = null;
+                                        }
+                                    },
+                                }
+                            });
                             vm.$nextTick(() => {
-                                vm.tag_puesto.whitelist = vm.puestos.map(item => ({value: item.nombre, id: item.id}));
+                                if(vm.isEditPuesto){
+                                    if(vm.empleado.info_puesto?.puesto){
+                                        vm.tag_puesto.addTags([{value: vm.empleado.info_puesto?.puesto?.nombre, id: vm.empleado.info_puesto?.puesto?.id}]);
+                                    }
+                                }
                             });
                         }, 'json'
                     );
@@ -1261,12 +1292,48 @@
                         '/api/empleados/areas',
                         res => {
                             vm.areas = res.results;
-                            vm.$nextTick(() => {
-                                vm.tag_area.whitelist = vm.areas.map(item => ({value: item.nombre, id: item.id}));
+                            vm.tag_area = new Tagify(document.querySelector("#tag_area"), {
+                                enforceWhitelist: false,
+                                whitelist: res.results.map(item => ({value: item.nombre, id: item.id})),
+                                maxTags: 1,
+                                dropdown: {
+                                    enabled: 1,
+                                    maxItems: 10,
+                                },
+                                callbacks: {
+                                    change: e => {
+                                        if(e.detail.value != ''){
+                                            let tags = JSON.parse(e.detail.value)[0];
+                                            if(tags.value == '') {
+                                                vm.puesto_model.area_id = null;
+                                                vm.puesto_model.area = null;
+                                            } else {
+                                                if(tags.id && tags.id!=''){
+                                                    vm.puesto_model.area_id = tags.id;
+                                                    vm.puesto_model.area = null;
+                                                } else {
+                                                    vm.puesto_model.area_id = null;
+                                                    vm.puesto_model.area = tags.value;
+                                                }
+                                            }
+                                        } else {
+                                            vm.puesto_model.area_id = null;
+                                            vm.puesto_model.area = null;
+                                        }
+                                    },
+                                }
+                            });
+                                vm.$nextTick(() => {
+                                if(vm.isEditPuesto){
+                                    if(vm.empleado.info_puesto?.area){
+                                        vm.tag_area.addTags([{value: vm.empleado.info_puesto?.area?.nombre, id: vm.empleado.info_puesto?.area?.id}]);
+                                    }
+                                }
                             });
                         }, 'json'
                     );
                 },
+                // Save data Request
                 saveEmpleadoInfo() {
                     let vm = this;
                     if (vm.validator) {
@@ -1278,7 +1345,7 @@
                                     method: "POST",
                                     url: "/api/empleados/save-empleado",
                                     data: {
-                                        empleado_id: vm.empleado.id,
+                                        id: vm.empleado.id,
                                         no_empleado: vm.info_model.no_empleado,
                                         nombre: vm.info_model.nombre,
                                         apellidos: vm.info_model.apellidos,
@@ -1297,6 +1364,7 @@
                                         fecha_nacimiento: vm.info_model.fecha_nacimiento,
                                         fecha_ingreso: vm.info_model.fecha_ingreso,
                                         fecha_alta_imss: vm.info_model.fecha_alta_imss,
+                                        banco: vm.info_model.banco,
                                         no_cuenta: vm.info_model.no_cuenta,
                                         no_clabe: vm.info_model.no_clabe,
                                         no_tarjeta: vm.info_model.no_tarjeta,
@@ -1308,7 +1376,7 @@
                                             "Los datos del empleado se han almacenado con éxito",
                                             "success"
                                         );
-                                        vm.empleado = res.results;
+                                        vm.empleado = res.empleado;
                                         vm.isEditInfo = false;
                                     } else {
                                         Swal.fire(
@@ -1318,7 +1386,7 @@
                                         );
                                     }
                                 }).fail(function (jqXHR, textStatus) {
-                                    console.log("Request failed saveEmpleado: " + textStatus, jqXHR);
+                                    console.log("Request failed saveEmpleadoInfo: " + textStatus, jqXHR);
                                     Swal.fire("¡Error!", "Ocurrió un error inesperado al procesar la solicitud. Por favor, inténtelo nuevamente.", "error");
                                 }).always(function (event, xhr, settings) {
                                     vm.loading = false;
@@ -1363,7 +1431,7 @@
                             );
                         }
                     }).fail(function (jqXHR, textStatus) {
-                        console.log("Request failed saveEmpleado: " + textStatus, jqXHR);
+                        console.log("Request failed saveEmpleadoPuesto: " + textStatus, jqXHR);
                         Swal.fire("¡Error!", "Ocurrió un error inesperado al procesar la solicitud. Por favor, inténtelo nuevamente.", "error");
                     }).always(function (event, xhr, settings) {
                         vm.loading = false;
@@ -1396,6 +1464,9 @@
                             pres_seguro_medico_menor: vm.nomina_model.pres_seguro_medico_menor,
                             pres_cursos_profesional: vm.nomina_model.pres_cursos_profesional,
                             pres_cursos_personal: vm.nomina_model.pres_cursos_personal,
+                            pres_prima_vacacional: vm.nomina_model.pres_prima_vacacional,
+                            pres_aguinaldo: vm.nomina_model.pres_aguinaldo,
+                            pres_ptu: vm.nomina_model.pres_ptu,
                             pres_otros: vm.nomina_model.pres_otros,
                         }
                     }).done(function (res) {
@@ -1415,7 +1486,7 @@
                             );
                         }
                     }).fail(function (jqXHR, textStatus) {
-                        console.log("Request failed saveEmpleado: " + textStatus, jqXHR);
+                        console.log("Request failed saveEmpleadoNomina: " + textStatus, jqXHR);
                         Swal.fire("¡Error!", "Ocurrió un error inesperado al procesar la solicitud. Por favor, inténtelo nuevamente.", "error");
                     }).always(function (event, xhr, settings) {
                         vm.loading = false;
@@ -1459,7 +1530,7 @@
                             );
                         }
                     }).fail(function (jqXHR, textStatus) {
-                        console.log("Request failed saveEmpleado: " + textStatus, jqXHR);
+                        console.log("Request failed saveFile: " + textStatus, jqXHR);
                         Swal.fire("¡Error!", "Ocurrió un error inesperado al procesar la solicitud. Por favor, inténtelo nuevamente.", "error");
                     }).always(function (event, xhr, settings) {
                         vm.loading = false;
@@ -1506,7 +1577,7 @@
                                     );
                                 }
                             }).fail(function (jqXHR, textStatus) {
-                                console.log("Request failed deleteEmpleado: " + textStatus, jqXHR);
+                                console.log("Request failed deleteFile: " + textStatus, jqXHR);
                                 Swal.fire("¡Error!", "Ocurrió un error inesperado al procesar la solicitud. Por favor, inténtelo nuevamente.", "error");
                             }).always(function (event, xhr, settings) {
                                 vm.loading = false;
@@ -1515,6 +1586,7 @@
                         }
                     })
                 },
+                // Functions
                 formatFilesList() {
                     let vm = this;
 
@@ -1724,17 +1796,7 @@
                     return this.sucursales.map(item => ({id: item.id, text: item.nombre}));
                 },
                 gastoTotalNomina() {
-                    return this.parseDecimals(this.empleado.info_nomina?.sueldo_mensual_bruto) +
-                        this.parseDecimals(this.empleado.info_nomina?.sueldo_mensual_efectivo) +
-                        this.parseDecimals(this.empleado.info_nomina?.gasto_patronal) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_vehiculo) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_gasolina) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_celular) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_alimentos) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_seguro_medico_menor) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_cursos_profesional) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_cursos_personal) +
-                        this.parseDecimals(this.empleado.info_nomina?.pres_otros);
+                    return 0;
                 }
             },
             watch: {
@@ -1759,6 +1821,7 @@
                             fecha_nacimiento: this.empleado.fecha_nacimiento,
                             rfc: this.empleado.rfc,
                             domicilio_fiscal: this.empleado.domicilio_fiscal,
+                            banco: this.empleado.banco,
                             no_cuenta: this.empleado.no_cuenta,
                             no_clabe: this.empleado.no_clabe,
                             no_tarjeta: this.empleado.no_tarjeta,
@@ -1782,15 +1845,27 @@
                                 {dia: 'Domingo'},
                             ],
                         };
-
-                        if(this.empleado.info_puesto?.puesto){
+                        if(this.empleado.info_puesto?.puesto && this.tag_puesto){
                             this.tag_puesto.addTags([{value: this.empleado.info_puesto?.puesto?.nombre, id: this.empleado.info_puesto?.puesto?.id}]);
-                            this.tag_puesto.value = [{value: this.empleado.info_puesto?.puesto?.nombre, id: this.empleado.info_puesto?.puesto?.id}];
                         }
-                        if(this.empleado.info_puesto?.area){
+                        if(this.empleado.info_puesto?.area && this.tag_area){
                             this.tag_area.addTags([{value: this.empleado.info_puesto?.area?.nombre, id: this.empleado.info_puesto?.area?.id}]);
-                            this.tag_area.value = [{value: this.empleado.info_puesto?.area?.nombre, id: this.empleado.info_puesto?.area?.id}];   
                         }
+                    } else {
+                        this.puesto_model = {
+                            horario: [
+                                {dia: 'Lunes'},
+                                {dia: 'Martes'},
+                                {dia: 'Miércoles'},
+                                {dia: 'Jueves'},
+                                {dia: 'Viernes'},
+                                {dia: 'Sábado'},
+                                {dia: 'Domingo'},
+                            ],
+                        };
+
+                        this.tag_puesto?.removeAllTags();
+                        this.tag_area?.removeAllTags();
                     }
                 },
                 isEditNomina(n, o) {
@@ -1813,8 +1888,13 @@
                             pres_seguro_medico_menor: this.empleado.info_nomina?.pres_seguro_medico_menor,
                             pres_cursos_profesional: this.empleado.info_nomina?.pres_cursos_profesional,
                             pres_cursos_personal: this.empleado.info_nomina?.pres_cursos_personal,
+                            pres_prima_vacacional: this.empleado.info_nomina?.pres_prima_vacacional,
+                            pres_aguinaldo: this.empleado.info_nomina?.pres_aguinaldo,
+                            pres_ptu: this.empleado.info_nomina?.pres_ptu,
                             pres_otros: this.empleado.info_nomina?.pres_otros,
                         };
+                    } else {
+                        this.nomina_model = {};
                     }
                 },
             }
