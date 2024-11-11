@@ -7,6 +7,8 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
+use Ongoing\Sucursales\Entities\Sucursales;
+
 /**
  * Class EmpleadoPuesto.
  *
@@ -52,7 +54,7 @@ class EmpleadoPuesto extends Model implements Transformable
     }
 
     public function sucursal(){
-        return $this->belongsTo(\Ongoing\Sucursales\Entities\Sucursales::class);
+        return $this->belongsTo(Sucursales::class);
     }
 
     public function jefe(){
