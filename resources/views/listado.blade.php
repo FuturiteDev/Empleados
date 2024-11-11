@@ -119,27 +119,27 @@
                                         <input type="text" class="form-control" v-model="empleado_model.curp" name="curp"/>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
-                                        <label class="fw-semibold fs-6 ms-2">Número de INE</label>
+                                        <label class="fw-semibold fs-6 ms-2">INE</label>
                                         <input type="text" class="form-control" v-model="empleado_model.ine" name="ine"/>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
-                                        <label class="fw-semibold fs-6 ms-2">Número de Seguro Social</label>
+                                        <label class="fw-semibold fs-6 ms-2">Seguro Social(NSS)</label>
                                         <input type="text" class="form-control" v-model="empleado_model.nss" name="nss"/>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
                                         <span>
-                                            <label class="fw-semibold fs-6 ms-2">Dirección domicilio</label>
+                                            <label class="form-label text-dark mb-0 ms-2">Dirección domicilio</label>
                                             <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como viene en la INE"></i>
                                         </span>
-                                        <input type="text" class="form-control" v-model="empleado_model.domicilio_ine" name="domicilio_ine"/>
+                                        <textarea rows="5" class="form-control" v-model="empleado_model.domicilio_ine" name="domicilio_ine" style="resize:none;"></textarea>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
-                                        <label class="fw-semibold fs-6 ms-2">Dirección fiscal</label>
-                                        <input type="text" class="form-control" v-model="empleado_model.domicilio_fiscal" name="domicilio_fiscal"/>
+                                        <label class="form-label text-dark mb-0 ms-2">Dirección fiscal</label>
+                                        <textarea rows="5" class="form-control" v-model="empleado_model.domicilio_fiscal" name="domicilio_fiscal" style="resize:none;"></textarea>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
                                         <label class="fw-semibold fs-6 ms-2">Dirección donde vive</label>
-                                        <input type="text" class="form-control" v-model="empleado_model.domicilio_actual" name="domicilio_actual"/>
+                                        <textarea rows="5" class="form-control" v-model="empleado_model.domicilio_actual" name="domicilio_actual" style="resize:none;"></textarea>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
                                         <label class="fw-semibold fs-6 ms-2">Teléfono casa</label>
@@ -150,7 +150,7 @@
                                         <input type="tel" class="form-control" v-model="empleado_model.celular" name="celular"/>
                                     </div>
                                     <div class="col-6 mb-7 fv-row">
-                                        <label class="fw-semibold fs-6 ms-2">Email</label>
+                                        <label class="fw-semibold fs-6 ms-2">Email personal</label>
                                         <div class="input-group">
                                             <input type="email" class="form-control" v-model="empleado_model.email" name="email"/>
                                             <span class="input-group-text">@</span>
@@ -292,6 +292,7 @@
                     vm.blockUI = new KTBlockUI(container);
                 }
                 vm.getEmpleados(true);
+                vm.initPickers();
                 vm.initformValidate();
 
                 $("#kt_modal_add_empleado").on('hidden.bs.modal', event => {
