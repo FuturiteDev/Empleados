@@ -127,16 +127,23 @@ class EmpleadosController extends Controller
             if ($request->id) {
                 $empleado = $this->empleados->find($request->id);
                 $empleado->update($values);
+                $empleado->refresh();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Empleado registrado con éxito.",
+                    'empleado' => $empleado
+                ], 200);
             } else {
                 $empleado = $this->empleados->create($values);
-            }
 
-            $empleados = $this->getAll()->getData(true);
-            return response()->json([
-                'success' => true,
-                'message' => "Empleado guardado.",
-                'results' => $empleados['results']
-            ], 200);
+                $empleados = $this->getAll()->getData(true);
+                return response()->json([
+                    'success' => true,
+                    'message' => "Empleado registrado con éxito.",
+                    'results' => $empleados['results']
+                ], 200);
+            }
         } catch (\Exception $e) {
             Log::info("EmpleadosController->saveEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
             
@@ -223,6 +230,8 @@ class EmpleadosController extends Controller
                 $empleado->infoPuesto->save();
             }
 
+            $empleado->infoPuesto->refresh();
+
             return response()->json([
                 'success' => true,
                 'message' => "Información guardada con éxito.",
@@ -261,6 +270,7 @@ class EmpleadosController extends Controller
                 $empleado->infoNomina->save();
             }
 
+            $empleado->infoNomina->refresh();
             return response()->json([
                 'success' => true,
                 'message' => "Información guardada con éxito.",
