@@ -29,14 +29,16 @@ class EmpleadosController extends Controller
         $this->areas = $areas;
         $this->puestos = $puestos;
     }
-    
-    function index() {
+
+    function index()
+    {
         Gate::authorize('access-granted', '/empleados');
         $empleados = $this->getAll()->getData(true);
         return view('empleados::listado', ['empleados' => $empleados['results']]);
     }
 
-    public function detalle($id) {
+    public function detalle($id)
+    {
 
         $empleado = $this->empleados->with(['infoPuesto', 'infoNomina', 'archivos'])->find($id);
 
@@ -47,10 +49,11 @@ class EmpleadosController extends Controller
      * Lista de empleados activos
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function getAll(){
+    public function getAll()
+    {
         try {
             $empleados = $this->empleados->findWhere(
-                ['estatus' => 1], 
+                ['estatus' => 1],
                 [
                     'id',
                     'no_empleado',
@@ -74,11 +77,11 @@ class EmpleadosController extends Controller
                 'results' => $empleados
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->getAll() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->getAll() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->getAll() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->getAll() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -91,17 +94,18 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function saveEmpleado(Request $request){
+    public function saveEmpleado(Request $request)
+    {
         try {
 
-            
+
             // Validaciones
             $validator = Validator::make($request->all(), [
                 'no_empleado' => 'required',
                 'nombre' => 'required',
                 'apellidos' => 'required'
             ]);
-            
+
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
@@ -109,7 +113,7 @@ class EmpleadosController extends Controller
                     "info" => $validator->errors(),
                 ]);
             }
-            
+
             $values = $request->except(['id']);
 
             $empleadoExistente = $this->empleados->where('no_empleado', $values['no_empleado'])
@@ -145,11 +149,11 @@ class EmpleadosController extends Controller
                 ], 200);
             }
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->saveEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->saveEmpleado() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->saveEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->saveEmpleado() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -195,11 +199,12 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function savePuestoEmpleado(Request $request){
+    public function savePuestoEmpleado(Request $request)
+    {
         try {
 
             $empleado = $this->empleados->with('infoPuesto')->find($request->empleado_id);
-            
+
             $data = [
                 'area_id' => null,
                 'puesto_id' => null,
@@ -208,24 +213,24 @@ class EmpleadosController extends Controller
                 'horario' => $request->horario ?? [],
             ];
 
-            if($request->area_id){
+            if ($request->area_id) {
                 $data['area_id'] = $request->area_id;
-            }elseif($request->area){
+            } elseif ($request->area) {
                 $area = $this->areas->firstOrCreate(['nombre' => $request->area]);
                 $data['area_id'] = $area->id;
             }
 
-            if($request->puesto_id){
+            if ($request->puesto_id) {
                 $data['puesto_id'] = $request->puesto_id;
-            }elseif($request->puesto){
+            } elseif ($request->puesto) {
                 $puesto = $this->puestos->firstOrCreate(['nombre' => $request->puesto]);
                 $data['puesto_id'] = $puesto->id;
             }
-            
-            if(empty($empleado->infoPuesto)){
+
+            if (empty($empleado->infoPuesto)) {
                 $empleado->infoPuesto()->create($data);
                 $empleado->load('infoPuesto');
-            }else{
+            } else {
                 $empleado->infoPuesto->fill($data);
                 $empleado->infoPuesto->save();
             }
@@ -238,11 +243,11 @@ class EmpleadosController extends Controller
                 'infoPuesto' => $empleado->infoPuesto
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->savePuestoEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->savePuestoEmpleado() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->savePuestoEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->savePuestoEmpleado() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -255,17 +260,18 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function saveNominaEmpleado(Request $request){
+    public function saveNominaEmpleado(Request $request)
+    {
         try {
 
             $empleado = $this->empleados->with('infoNomina')->find($request->empleado_id);
-            
+
             $data = $request->except(['empleado_id']);
-            
-            if(empty($empleado->infoNomina)){
+
+            if (empty($empleado->infoNomina)) {
                 $empleado->infoNomina()->create($data);
                 $empleado->load('infoNomina');
-            }else{
+            } else {
                 $empleado->infoNomina->fill($data);
                 $empleado->infoNomina->save();
             }
@@ -277,11 +283,11 @@ class EmpleadosController extends Controller
                 'infoNomina' => $empleado->infoNomina
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->saveNominaEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->saveNominaEmpleado() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->saveNominaEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->saveNominaEmpleado() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -295,7 +301,8 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function saveFileEmpleado(Request $request){
+    public function saveFileEmpleado(Request $request)
+    {
         try {
 
             $validator = Validator::make($request->all(), [
@@ -316,7 +323,7 @@ class EmpleadosController extends Controller
             $data = $request->only('categoria', 'slug');
             $empleado = $this->empleados->find($request->empleado_id);
 
-            $path = $request->archivo->store('archivos/empleado_'.$empleado->id);
+            $path = $request->archivo->store('archivos/empleado_' . $empleado->id);
             $data['archivo'] = array(
                 'nombre' => $request->archivo->getClientOriginalName(),
                 'extension' => $request->archivo->getClientOriginalExtension(),
@@ -325,18 +332,18 @@ class EmpleadosController extends Controller
 
             $empleado->archivos()->create($data);
             $empleado->load('archivos');
-            
+
             return response()->json([
                 'success' => true,
                 'message' => "Archivo guardado con éxito.",
                 'archivos' => $empleado->archivos
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->saveFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->saveFileEmpleado() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->saveFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->saveFileEmpleado() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -350,12 +357,13 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function deleteFileEmpleado(Request $request){
+    public function deleteFileEmpleado(Request $request)
+    {
         try {
 
             $empleado = $this->empleados->find($request->empleado_id);
             $archivo = $empleado->archivos()->find($request->archivo_id);
-            if($archivo){
+            if ($archivo) {
                 $archivo->estatus = 0;
                 $archivo->save();
             }
@@ -367,11 +375,11 @@ class EmpleadosController extends Controller
                 'archivos' => $empleado->archivos
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->deleteFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->deleteFileEmpleado() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->deleteFileEmpleado() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->deleteFileEmpleado() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -385,7 +393,8 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function getAreas(){
+    public function getAreas()
+    {
         try {
 
             return response()->json([
@@ -393,11 +402,11 @@ class EmpleadosController extends Controller
                 'results' => $this->areas->findByField('estatus', 1)
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->getAreas() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->getAreas() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->getAreas() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->getAreas() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -410,22 +419,23 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function getPuestos(){
-        try {
 
+
+    public function getEmpleadoNo($no_empleado)
+    {
+        try {
             return response()->json([
                 'success' => true,
-                'results' => $this->puestos->findByField('estatus', 1)
+                'results' => $this->empleados->findByField('no_empleado', $no_empleado)->first()
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->getEmpleadoNo() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->getEmpleadoNo() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
     }
-
 }
