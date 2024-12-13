@@ -1242,7 +1242,7 @@
                 getPuestos() {
                     let vm = this;
                     $.get(
-                        '/api/empleados/all',
+                        '/api/empleados/puestos',
                         res => {
                             vm.puestos = res.results;
                             vm.tag_puesto = new Tagify(document.querySelector("#tag_puesto"), {
