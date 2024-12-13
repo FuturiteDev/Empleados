@@ -65,4 +65,25 @@ class Empleado extends Model implements Transformable
     public function archivos(){
         return $this->hasMany(EmpleadoArchivos::class)->where('estatus', 1);
     }
+
+    public function jefe()
+    {
+        return $this->hasOneThrough(
+            Empleado::class,         // Modelo relacionado directamente (el jefe)
+            EmpleadoPuesto::class,   // Modelo intermedio (relación empleado-puesto)
+            'empleado_id',           // Llave foránea en `empleado_puesto` que relaciona con `empleado`
+            'id',                    // Llave primaria en `empleado` (el jefe)
+            'id',                    // Llave primaria en `empleado` (el empleado actual)
+            'jefe_id'                // Llave foránea en `empleado_puesto` que relaciona con el jefe
+        )
+        ->select([
+            'empleados.id',
+            'empleados.no_empleado',
+            'empleados.email',
+            'empleados.nombre',
+            'empleados.apellidos',
+            'empleados.alias',
+            'empleados.email',
+        ]);
+    }
 }
