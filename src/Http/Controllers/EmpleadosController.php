@@ -419,8 +419,30 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
+    public function getPuestos(){
+        try {
+
+            return response()->json([
+                'success' => true,
+                'results' => $this->puestos->findByField('estatus', 1)
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine());
+            
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
 
 
+    /**
+     * Summary of getEmpleadoNo
+     * @param mixed $no_empleado
+     * @return mixed
+     */
     public function getEmpleadoNo($no_empleado)
     {
         try {
