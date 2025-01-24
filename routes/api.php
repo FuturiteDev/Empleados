@@ -26,4 +26,5 @@ Route::prefix('empleados')->group(function () {
     Route::get('/areas', [EmpleadosController::class, 'getAreas'])->name('get_areas_empleados');
     Route::get('/puestos', [EmpleadosController::class, 'getPuestos'])->name('get_puestos_empleados');
     Route::get('/get-empleado-numero/{no_empleado}', [EmpleadosController::class, 'getEmpleadoNo'])->name('getEmpleadoNo');
+    Route::get('/registrar-asistencia/{empleado_id}', [EmpleadosController::class, 'saveAsistencia'])->name('saveAsistencia');
 });

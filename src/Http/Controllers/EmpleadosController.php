@@ -10,6 +10,7 @@ use Log;
 
 use Ongoing\Empleados\Repositories\EmpleadosRepositoryEloquent;
 use Ongoing\Empleados\Repositories\AreasRepositoryEloquent;
+use Ongoing\Empleados\Repositories\EmpleadosAsistenciaRepositoryEloquent;
 use Ongoing\Empleados\Repositories\PuestosRepositoryEloquent;
 
 
@@ -19,15 +20,18 @@ class EmpleadosController extends Controller
     protected $empleados;
     protected $areas;
     protected $puestos;
+    protected $asistencia;
 
     public function __construct(
         EmpleadosRepositoryEloquent $empleados,
         AreasRepositoryEloquent $areas,
-        PuestosRepositoryEloquent $puestos
+        PuestosRepositoryEloquent $puestos,
+        EmpleadosAsistenciaRepositoryEloquent $asistencia
     ) {
         $this->empleados = $empleados;
         $this->areas = $areas;
         $this->puestos = $puestos;
+        $this->asistencia = $asistencia;
     }
 
     function index()
@@ -456,6 +460,30 @@ class EmpleadosController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => "[ERROR] EmpleadosController->getEmpleadoNo() | " . $e->getMessage() . " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+
+    public function saveAsistencia($empleado_id)
+    {
+        try {
+            
+            $this->asistencia->create([
+                'empleado_id' => $empleado_id,
+                'fecha' => now()->toDateString(),
+                'hora' => now()->toTimeString(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Asistencia registrada correctamente.",
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->saveAsistencia() | " . $e->getMessage() . " | " . $e->getLine());
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->saveAsistencia() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
