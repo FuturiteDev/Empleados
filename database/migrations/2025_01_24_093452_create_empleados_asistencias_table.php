@@ -12,16 +12,20 @@ return new class extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('empleado_asistencias', function(Blueprint $table) {
-            $table->increments('id');
-			$table->unsignedInteger('empleado_id');
+		Schema::create('empleado_asistencias', function (Blueprint $table) {
+			$table->increments('id');
+			$table->unsignedBigInteger('empleado_id');
+        	$table->unsignedInteger('sucursal_id'); 
 			$table->date('fecha');
 			$table->time('hora');
-            $table->timestamps();
-
+			$table->integer('motivo')->nullable();
+			$table->string('imagen')->nullable();
+			$table->timestamps();
+		
 			$table->engine = 'InnoDB';
-
+		
 			$table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('restrict');
+			$table->foreign('sucursal_id')->references('id')->on('sucursales')->onDelete('restrict');
 		});
 	}
 

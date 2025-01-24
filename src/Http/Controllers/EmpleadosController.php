@@ -12,8 +12,8 @@ use Ongoing\Empleados\Repositories\EmpleadosRepositoryEloquent;
 use Ongoing\Empleados\Repositories\AreasRepositoryEloquent;
 use Ongoing\Empleados\Repositories\EmpleadosAsistenciaRepositoryEloquent;
 use Ongoing\Empleados\Repositories\PuestosRepositoryEloquent;
-
-
+use Ongoing\Sucursales\Entities\Sucursales;
+use Ongoing\Sucursales\Repositories\SucursalesRepositoryEloquent;
 
 class EmpleadosController extends Controller
 {
@@ -21,17 +21,20 @@ class EmpleadosController extends Controller
     protected $areas;
     protected $puestos;
     protected $asistencia;
+    protected $sucursales;
 
     public function __construct(
         EmpleadosRepositoryEloquent $empleados,
         AreasRepositoryEloquent $areas,
         PuestosRepositoryEloquent $puestos,
-        EmpleadosAsistenciaRepositoryEloquent $asistencia
+        EmpleadosAsistenciaRepositoryEloquent $asistencia,
+        SucursalesRepositoryEloquent $sucursales
     ) {
         $this->empleados = $empleados;
         $this->areas = $areas;
         $this->puestos = $puestos;
         $this->asistencia = $asistencia;
+        $this->sucursales = $sucursales;
     }
 
     function index()
@@ -423,7 +426,8 @@ class EmpleadosController extends Controller
      *
      * @return JSON
      **/
-    public function getPuestos(){
+    public function getPuestos()
+    {
         try {
 
             return response()->json([
@@ -431,11 +435,11 @@ class EmpleadosController extends Controller
                 'results' => $this->puestos->findByField('estatus', 1)
             ], 200);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine());
-            
+            Log::info("EmpleadosController->getPuestos() | " . $e->getMessage() . " | " . $e->getLine());
+
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->getPuestos() | " . $e->getMessage(). " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->getPuestos() | " . $e->getMessage() . " | " . $e->getLine(),
                 'results' => null
             ], 500);
         }
@@ -465,14 +469,44 @@ class EmpleadosController extends Controller
         }
     }
 
-    public function saveAsistencia($empleado_id)
+    public function saveAsistencia(Request $request)
     {
         try {
-            
+
+            $empleado = $this->empleados->find($request->empleado_id);
+            if (!$empleado) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "El empleado no existe.",
+                ], 400);
+            }
+    
+            $sucursal = $this->sucursales->find($request->sucursal_id);
+            if (!$sucursal) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "La sucursal no existe.",
+                ], 400);
+            }
+
+            $fotoPath = null;
+            if ($request->hasFile('imagen')) {
+                $foto = $request->file('imagen');
+
+                $fotoPath = $foto->storeAs(
+                    "asistencias/empleado_ " . $request->empleado_id,
+                    $foto->getClientOriginalName(),
+                    'public'
+                );
+            }
+
             $this->asistencia->create([
-                'empleado_id' => $empleado_id,
+                'empleado_id' => $request->empleado_id,
+                'sucursal_id' => $request->sucursal_id,
                 'fecha' => now()->toDateString(),
                 'hora' => now()->toTimeString(),
+                'motivo' => $request->motivo,
+                'imagen' => $fotoPath
             ]);
 
             return response()->json([
