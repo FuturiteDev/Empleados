@@ -15,6 +15,10 @@ use Ongoing\Empleados\Repositories\PuestosRepositoryEloquent;
 use Ongoing\Sucursales\Entities\Sucursales;
 use Ongoing\Sucursales\Repositories\SucursalesRepositoryEloquent;
 
+use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isEmpty;
+
 class EmpleadosController extends Controller
 {
     protected $empleados;
@@ -480,7 +484,7 @@ class EmpleadosController extends Controller
                     'message' => "El empleado no existe.",
                 ], 400);
             }
-    
+
             $sucursal = $this->sucursales->find($request->sucursal_id);
             if (!$sucursal) {
                 return response()->json([
@@ -494,7 +498,7 @@ class EmpleadosController extends Controller
                 $foto = $request->file('imagen');
 
                 $fotoPath = $foto->storeAs(
-                    "asistencias/empleado_ " . $request->empleado_id,
+                    "asistencias/empleado_" . $request->empleado_id,
                     $foto->getClientOriginalName(),
                     'public'
                 );
@@ -522,4 +526,84 @@ class EmpleadosController extends Controller
             ], 500);
         }
     }
+
+
+    public function historialAsistencias($empleado_id) {
+        try {
+            $asistencias = $this->asistencia
+                ->where('empleado_id', $empleado_id)
+                ->orderBy('fecha')
+                ->orderBy('hora')
+                ->get()
+                ->groupBy('fecha');
+    
+            if ($asistencias->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontraron registros de asistencias para este empleado.',
+                ], 300);
+            }
+    
+            $resultado = [];
+    
+            foreach ($asistencias as $fecha => $registros) {
+                $asistencia = [];
+                $entrada = null;
+                $foto_entrada = null;
+    
+                foreach ($registros as $registro) {
+                    $fechaHora = $registro->fecha . ' ' . $registro->hora;
+                    $foto = $registro->imagen ? $registro->imagen : null; 
+    
+                    if ($registro->motivo == 0) { // Entrada
+                        $entrada = $fechaHora;
+                        $foto_entrada = $foto;
+                    } else { // Salida
+                        if ($entrada) {
+                            $asistencia[] = [
+                                'entrada' => $entrada,
+                                'foto_entrada' => $foto_entrada,
+                                'salida' => $fechaHora,
+                                'foto_salida' => $foto
+                            ];
+                            $entrada = null;
+                            $foto_entrada = null;
+                        } else {
+                            $asistencia[] = [
+                                'salida' => $fechaHora,
+                                'foto_salida' => $foto
+                            ];
+                        }
+                    }
+                }
+    
+                if ($entrada) {
+                    $asistencia[] = [
+                        'entrada' => $entrada,
+                        'foto_entrada' => $foto_entrada
+                    ];
+                }
+    
+                $resultado[] = [
+                    'fecha' => $fecha,
+                    'asistencia' => $asistencia
+                ];
+            }
+    
+            return response()->json([
+                'success' => true,
+                'data' => $resultado,
+            ], 200);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->historialAsistencias() | " . $e->getMessage() . " | " . $e->getLine());
+    
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->historialAsistencias() | " . $e->getMessage() . " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
+    
+    
 }
