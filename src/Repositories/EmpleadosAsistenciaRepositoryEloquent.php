@@ -4,7 +4,7 @@ namespace Ongoing\Empleados\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use Ongoing\Empleados\Repositories\empleadosAsistenciaRepository;
+use Ongoing\Empleados\Repositories\EmpleadosAsistenciaRepository;
 use Ongoing\Empleados\Entities\EmpleadosAsistencia;
 use App\Validators\EmpleadosAsistenciaValidator;
 
