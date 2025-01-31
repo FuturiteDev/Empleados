@@ -814,11 +814,36 @@
                             </div>
                         </div>
                         <div class="tab-pane p-5 mt-5 fade" id="asistencias" role="tabpanel" aria-divledby="asistencias-tab">
-                            <div class="row">
-                                <div class="col-6 mb-5 fv-row">
-                                    <div class="form-label text-dark mb-0">Entradas y salidas diarias</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.entradas_salidas ?? ""]]</div>
+                            <div class="mb-5">
+                                <div class="form-label text-dark mb-0">Entradas y salidas diarias</div>
+                                    <div class="table-responsive">
+                                        <table id="kt_table_scroll" class="table table-sm table-rounded table-bordered">
+                                            <thead>
+                                                <tr class="fw-bold fs-6 text-gray-800">
+                                                    <th class="p-2 align-middle text-center">Fecha</th>
+                                                    <th class="p-2 align-middle text-center">Entrada</th>
+                                                    <th class="p-2 align-middle text-center">Salida</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(item, index) in formatAsistencias" :key="index">
+                                                    <td class="px-2 text-center align-middle">[[ item.fecha, null, 'YYYY-MM-DD' | fecha ]]</td>
+                                                    <td class="text-center align-middle">
+                                                        <div class="px-2 text-center align-middle">[[ item.entrada, null, 'YYYY-MM-DD HH:mm:ss' | time ]]</div>
+                                                        <img style="margin: 0 auto;" class="mw-100 mh-100px" :src="'/' + item.foto_entrada"/>
+                                                    </td>
+                                                    <td class="text-center align-middle">
+                                                        <div class="px-2">[[ item.salida, null, 'YYYY-MM-DD HH:mm:ss' | time ]]</div>
+                                                        <img style="margin: 0 auto;" class="mw-100 mh-100px" :src="'/' + item.foto_salida"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
+                            </div>
+                       
+                            <div class="row">
                                 <div class="col-6 mb-5 fv-row">
                                     <div class="form-label text-dark mb-0">Llegadas tarde</div>
                                     <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.llegadas_tarde ?? ""]]</div>
@@ -859,6 +884,7 @@
     <script src="/common_assets/js/vue_components/v-currency.js"></script>
     <script src="/common_assets/js/vue_components/v-file.js"></script>
     <script src="/assets-1/js/vue2-filters.min.js"></script>
+    <script src="https://cdn.datatables.net/rowgroup/1.5.1/js/dataTables.rowGroup.min.js"></script>
 
     <script>
         const app = new Vue({
@@ -870,6 +896,7 @@
                 empleados: [],
                 areas: [],
                 puestos: [],
+                asistencias: [],
                 dias: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
                 tag_area: null,
                 tag_puesto: null,
@@ -1063,6 +1090,7 @@
                     contrato_actividades_indefinido: false,
                     contrato_retroalimentacion_indefinido: false,
                 },
+                table: null,
                 isEditInfo: false,
                 isEditPuesto: false,
                 isEditNomina: false,
@@ -1120,6 +1148,7 @@
                 vm.getEmpleados();
                 vm.getPuestos();
                 vm.getAreas();
+                vm.getAsistencias();
                 vm.formatFilesList();
             },
             methods: {
@@ -1213,6 +1242,23 @@
                             },
                         }
                     );
+                },
+                initTable(){
+                    let vm = this;
+                    vm.table = $("#kt_table_scroll").DataTable({
+                        serverSide: false,
+                        scrollX: true,
+                        scrollY: false,
+                        searching: false,
+                        ordering:  false,
+                        language: {
+                            url: '/assets-1/json/es-MX.json',
+                        },
+                        rowGroup: {
+                            dataSrc: 0,
+                            startClassName: 'bg-secondary text-center align-middle',
+                        },
+                    });
                 },
                 // Get Request
                 getEmpleados() {
@@ -1329,6 +1375,22 @@
                                         vm.tag_area.addTags([{value: vm.empleado.info_puesto?.area?.nombre, id: vm.empleado.info_puesto?.area?.id}]);
                                     }
                                 }
+                            });
+                        }, 'json'
+                    );
+                },
+                getAsistencias(){
+                    let vm = this;
+                    $.get(
+                        '/api/empleados/obtener-asistencias/1',
+                        res => {
+                            if(res.success){
+                                vm.asistencias = res.data;
+                            } else {
+                                vm.asistencias = []
+                            }
+                            vm.$nextTick(() => {
+                                vm.initTable();
                             });
                         }, 'json'
                     );
@@ -1797,6 +1859,16 @@
                 },
                 gastoTotalNomina() {
                     return 0;
+                },
+                formatAsistencias(){
+                    return this.asistencias.flatMap(item => item.asistencia.map((el, index, array) => ({
+                        fecha: item.fecha,
+                        length: array.length,
+                        entrada: el.entrada,
+                        foto_entrada: el.foto_entrada,
+                        salida: el.salida,
+                        foto_salida: el.foto_salida,
+                    })));
                 }
             },
             watch: {
@@ -1897,7 +1969,23 @@
                         this.nomina_model = {};
                     }
                 },
-            }
+            },
+            filters: {
+                fecha: function (value, usrFormat, ogFormat) {
+                    if (!value) return '---';
+                    format = !usrFormat ? 'DD/MM/Y' : usrFormat;
+                    value = value.toString();
+                    moment.locale('es');
+                    return ogFormat ? moment(value, ogFormat).format(format) : moment(value).format(format);
+                },
+                time: function (value, usrFormat, ogFormat) {
+                    if (!value) return '---';
+                    format = !usrFormat ? 'HH:mm:ss' : usrFormat;
+                    value = value.toString();
+                    moment.locale('es');
+                    return ogFormat ? moment(value, ogFormat).format(format) : moment(value).format(format);
+                },
+            },
         });
 
         Vue.use(VueTables.ClientTable);
