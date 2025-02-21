@@ -36,6 +36,6 @@ return new class extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('empleados_asistencias');
+		Schema::drop('empleado_asistencias');
 	}
 };
