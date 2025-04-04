@@ -37,7 +37,7 @@ class EmpleadosInitCommand extends Command
      *
      * @return int
      */
-    public function handle(NavegacionRepositoryEloquent $nav_repo)
+    public function handle()
     {
         $menu_navegacion = [
             [
