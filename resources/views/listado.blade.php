@@ -11,7 +11,7 @@
                     <!--begin::Page title-->
                     <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                         <!--begin::Title-->
-                        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Empleados</h1>
+                        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Staff</h1>
                         <!--end::Title-->
                         <!--begin::Breadcrumb-->
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -26,7 +26,7 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">Empleados</li>
+                            <li class="breadcrumb-item text-muted">Staff</li>
                             <!--end::Item-->
                         </ul>
                         <!--end::Breadcrumb-->
@@ -40,11 +40,11 @@
                 <!--begin::Card header-->
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                     <div class="card-title flex-column">
-                        <h3 class="ps-2">Listado de Empleados</h3>
+                        <h3 class="ps-2">Listado de Staff</h3>
                     </div>
                     <div class="card-toolbar">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_empleado" @click="">
-                            <i class="ki-outline ki-plus fs-2"></i> Agregar Empleado
+                            <i class="ki-outline ki-plus fs-2"></i> Agregar
                         </button>
                     </div>
                 </div>
