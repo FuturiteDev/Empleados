@@ -275,13 +275,15 @@
                 ],
 
                 empleado_model: {},
+                picker_fecha_nacimiento: null,
+                picker_fecha_ingreso: null,
+                picker_fecha_alta_imss: null,
 
                 isEdit: false,
-                validator: null,
                 loading: false,
+                validator: null,
                 blockUI: null,
                 requestGet: null,
-
             }),
             mounted() {
                 let vm = this;
@@ -298,6 +300,9 @@
                 $("#kt_modal_add_empleado").on('hidden.bs.modal', event => {
                     vm.initformValidate();
                     vm.empleado_model = {};
+                    vm.picker_fecha_nacimiento.clear();
+                    vm.picker_fecha_ingreso.clear();
+                    vm.picker_fecha_alta_imss.clear();
                 });
                 $("#kt_modal_add_empleado").on('shown.bs.modal', () => {
 
@@ -306,14 +311,20 @@
             methods: {
                 // Init
                 initPickers(){
-                    $("#fecha_nacimiento").flatpickr({
-                        dateFormat: "d/m/Y"
+                    this.picker_fecha_nacimiento = $("#fecha_nacimiento").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
                     });
-                    $("#fecha_ingreso").flatpickr({
-                        dateFormat: "d/m/Y"
+                    this.picker_fecha_ingreso = $("#fecha_ingreso").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
                     });
-                    $("#fecha_alta_imss").flatpickr({
-                        dateFormat: "d/m/Y"
+                    this.picker_fecha_alta_imss = $("#fecha_alta_imss").flatpickr({
+                        altInput: true,
+                        altFormat: "d/m/Y",
+                        dateFormat: "Y-m-d",
                     });
                 },
                 initformValidate() {
@@ -520,7 +531,8 @@
                                         'El registro de la empleado ha sido eliminado con éxito',
                                         'success'
                                     );
-                                    vm.empleados = res.results;
+                                    vm.empleados = res.empleados;
+                                    vm.getEmpleados(true);
                                 } else {
                                     Swal.fire(
                                         "¡Error!",

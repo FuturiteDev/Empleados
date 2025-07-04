@@ -100,11 +100,11 @@
                                 </div>
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Fecha ingreso a la empresa</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_ingreso ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_ingreso | fecha]]</div>
                                 </div>
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Fecha alta en el IMSS</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_alta_imss ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_alta_imss | fecha]]</div>
                                 </div>
                                 <div class="separator mt-3 mb-5 border-gray-300"></div>
                                 <h3 class="mb-5">Información General</h3>
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="col-6 mb-5">
                                     <div class="form-label text-dark mb-0">Fecha de nacimiento</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_nacimiento ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_nacimiento | fecha]]</div>
                                 </div>
                                 <div class="separator mt-3 mb-5 border-gray-300"></div>
                                 <h3 class="mb-5">Información Fiscal</h3>
