@@ -3,6 +3,8 @@
 namespace Ongoing\Empleados\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
@@ -624,19 +626,71 @@ class EmpleadosController extends Controller
                 $query->where('sucursal_id', $sucursal_id);
             }
 
-            $lista = $query
-                ->orderBy('fecha')
-                ->orderBy('hora')
-                ->get();
+            $lista = $query->orderBy('fecha')->orderBy('hora')->get();
 
             $lista_x_empleado = $lista->groupBy(function ($item) {
                 return $item->empleado_id . '_' . $item->fecha;
             });
 
+            $empleados_ids = $lista->pluck('empleado_id')->unique();
+            $empleados = $this->empleados->with('infoPuesto')->whereIn('id', $empleados_ids)->get()->keyBy('id');
+
+            $periodo =  CarbonPeriod::create($fecha_inicio, $fecha_fin);
+            $results = [];
+
+            $asistencias_por_empleado = $lista->groupBy('empleado_id');
+
+            foreach ($empleados as $empleado_id => $empleado) {
+                $horario_config = $empleado->infoPuesto?->horario ?? [];
+
+                $asistenciasEmpleado = $asistencias_por_empleado[$empleado_id] ?? collect();
+                $asistencias_por_dia = $asistenciasEmpleado->groupBy('fecha');
+
+                $asistencias = 0;
+                $retardos = 0;
+                $faltas = 0;
+
+                foreach ($periodo as $fechaObj) {
+                    $fecha = $fechaObj->format('Y-m-d');
+                    $diaNombre = ucfirst($fechaObj->locale('es')->isoFormat('dddd'));
+
+                    $config_dia = collect($horario_config)->firstWhere('dia', $diaNombre);
+                    if (!$config_dia || empty($config_dia['inicio'])) {
+                        continue;
+                    }
+
+                    $registroDia = $asistencias_por_dia[$fecha] ?? null;
+
+                    if ($registroDia) {
+                        $asistencias++;
+                        $primerRegistro = $registroDia->first();
+                        $horaEntradaEmpleado = Carbon::createFromFormat('H:i:s', $primerRegistro->hora);
+                        $horaConfigurada = Carbon::createFromFormat('H:i', $config_dia['inicio']);
+
+                        $diferenciaMinutos = $horaConfigurada->diffInMinutes($horaEntradaEmpleado, false);
+
+
+                        if ($diferenciaMinutos >= 10) {
+                            $retardoUnidades = ceil($diferenciaMinutos / 70);
+                            $retardos += $retardoUnidades;
+                        }
+                    } else {
+                        $faltas++;
+                    }
+                }
+
+                $results[] = [
+                    'no_empleado' => $empleado->no_empleado,
+                    'nombre' => $empleado->nombre_completo,
+                    'asistencias' => $asistencias,
+                    'retardos' => $retardos,
+                    'faltas' => $faltas,
+                ];
+            }
+
             return response()->json([
                 'success' => true,
-                'lista' => $lista,
-                'lista_x_empleado' => $lista_x_empleado,
+                'results' => $results,
             ]);
         } catch (\Exception $e) {
             Log::info("EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | " . $e->getLine());
