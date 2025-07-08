@@ -56,6 +56,13 @@ class EmpleadosController extends Controller
         return view('empleados::detalle', ['empleado' => $empleado]);
     }
 
+    function asistencias()
+    {
+        Gate::authorize('access-granted', '/empleados');
+        $empleados = $this->getAll()->getData(true);
+        return view('empleados::asistencias', ['empleados' => $empleados['results']]);
+    }
+
     /**
      * Lista de empleados activos
      * @return mixed|\Illuminate\Http\JsonResponse
