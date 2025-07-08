@@ -16,6 +16,7 @@ use Ongoing\Sucursales\Entities\Sucursales;
 use Ongoing\Sucursales\Repositories\SucursalesRepositoryEloquent;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -476,7 +477,6 @@ class EmpleadosController extends Controller
     public function saveAsistencia(Request $request)
     {
         try {
-
             $empleado = $this->empleados->find($request->empleado_id);
             if (!$empleado) {
                 return response()->json([
@@ -494,14 +494,16 @@ class EmpleadosController extends Controller
             }
 
             $fotoPath = null;
-            if ($request->hasFile('imagen')) {
-                $foto = $request->file('imagen');
 
-                $fotoPath = $foto->storeAs(
-                    "asistencias/empleado_" . $request->empleado_id,
-                    $foto->getClientOriginalName(),
-                    'public'
-                );
+            if (!empty($request->imagen) && is_array($request->imagen)) {
+                $cadena = '';
+                foreach ($request->imagen as $byte) {
+                    $cadena .= chr($byte);
+                }
+
+                $fname = md5(uniqid('', true)) . '.jpg';
+                $fotoPath = "asistencias/empleado_{$request->empleado_id}/{$fname}";
+                Storage::disk('public')->put($fotoPath, $cadena);
             }
 
             $this->asistencia->create([
@@ -528,7 +530,9 @@ class EmpleadosController extends Controller
     }
 
 
-    public function historialAsistencias($empleado_id) {
+
+    public function historialAsistencias($empleado_id)
+    {
         try {
             $asistencias = $this->asistencia
                 ->where('empleado_id', $empleado_id)
@@ -536,25 +540,25 @@ class EmpleadosController extends Controller
                 ->orderBy('hora')
                 ->get()
                 ->groupBy('fecha');
-    
+
             if ($asistencias->isEmpty()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'No se encontraron registros de asistencias para este empleado.',
                 ], 300);
             }
-    
+
             $resultado = [];
-    
+
             foreach ($asistencias as $fecha => $registros) {
                 $asistencia = [];
                 $entrada = null;
                 $foto_entrada = null;
-    
+
                 foreach ($registros as $registro) {
                     $fechaHora = $registro->fecha . ' ' . $registro->hora;
-                    $foto = $registro->imagen ? $registro->imagen : null; 
-    
+                    $foto = $registro->imagen ? $registro->imagen : null;
+
                     if ($registro->motivo == 0) { // Entrada
                         $entrada = $fechaHora;
                         $foto_entrada = $foto;
@@ -576,27 +580,27 @@ class EmpleadosController extends Controller
                         }
                     }
                 }
-    
+
                 if ($entrada) {
                     $asistencia[] = [
                         'entrada' => $entrada,
                         'foto_entrada' => $foto_entrada
                     ];
                 }
-    
+
                 $resultado[] = [
                     'fecha' => $fecha,
                     'asistencia' => $asistencia
                 ];
             }
-    
+
             return response()->json([
                 'success' => true,
                 'data' => $resultado,
             ], 200);
         } catch (\Exception $e) {
             Log::info("EmpleadosController->historialAsistencias() | " . $e->getMessage() . " | " . $e->getLine());
-    
+
             return response()->json([
                 'success' => false,
                 'message' => "[ERROR] EmpleadosController->historialAsistencias() | " . $e->getMessage() . " | " . $e->getLine(),
@@ -604,6 +608,44 @@ class EmpleadosController extends Controller
             ], 500);
         }
     }
-    
-    
+
+    public function reportesAsistencias(Request $request)
+    {
+        try {
+            $fecha_inicio = $request->fecha_inicio;
+            $fecha_fin = $request->fecha_fin;
+            $sucursal_id = $request->sucursal_id;
+
+            $query = $this->asistencia
+                ->whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                ->where('motivo', 0);
+
+            if (!empty($sucursal_id)) {
+                $query->where('sucursal_id', $sucursal_id);
+            }
+
+            $lista = $query
+                ->orderBy('fecha')
+                ->orderBy('hora')
+                ->get();
+
+            $lista_x_empleado = $lista->groupBy(function ($item) {
+                return $item->empleado_id . '_' . $item->fecha;
+            });
+
+            return response()->json([
+                'success' => true,
+                'lista' => $lista,
+                'lista_x_empleado' => $lista_x_empleado,
+            ]);
+        } catch (\Exception $e) {
+            Log::info("EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | " . $e->getLine());
+
+            return response()->json([
+                'success' => false,
+                'message' => "[ERROR] EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | " . $e->getLine(),
+                'results' => null
+            ], 500);
+        }
+    }
 }
