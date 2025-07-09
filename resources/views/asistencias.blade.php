@@ -125,6 +125,10 @@
                         loading: "Cargando...",
                         columns: "Columnas",
                     },
+                    orderBy: {
+                        ascending: true,
+                        column: 'no_empleado'
+                    },
                 },
                 filter_sucursal: null,
                 filter_fecha_inicio: null,
@@ -161,7 +165,7 @@
                         },
                     });
 
-                    vm.picker_entrega.setDate([moment().format("YYYY-MM-D"), moment().add(7, 'day').format("YYYY-MM-D")], true);
+                    vm.picker_entrega.setDate([moment().format("YYYY-MM-D"), moment().subtract(7, 'day').format("YYYY-MM-D")], true);
 
                     vm.$nextTick(() => {
                         vm.getEmpleados(true);                        
