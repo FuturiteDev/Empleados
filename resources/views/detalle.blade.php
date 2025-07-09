@@ -23,22 +23,16 @@
                         <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Staff</h1>
                         <!--end::Title-->
                         <!--begin::Breadcrumb-->
-                        <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
-                            <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">
+                        <ul class="breadcrumb breadcrumb-line text-muted fw-semibold fs-7 my-0 pt-1">
+                            <li class="breadcrumb-item">
                                 <a href="{{ route('home') }}" class="text-muted text-hover-primary">Inicio</a>
                             </li>
-                            <!--end::Item-->
-                            <!--begin::Item-->
                             <li class="breadcrumb-item">
-                                <span class="bullet bg-gray-400 w-5px h-2px"></span>
-                            </li>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">
                                 <a href="{{ route('empleados.list') }}" class="text-muted text-hover-primary">Staff</a>
                             </li>
-                            <!--end::Item-->
+                            <li class="breadcrumb-item">
+                                <span class="text-muted" v-text="empleado.nombre_completo"></span>
+                            </li>
                         </ul>
                         <!--end::Breadcrumb-->
                     </div>
@@ -46,46 +40,46 @@
                 </div>
                 <!--end::Toolbar container-->
             </div>
+            <!--begin::Toolbar-->
             <!--begin::Card-->
             <div class="card card-flush" id="content-card">
                 <!--begin::Card header-->
                 <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                     <div class="card-title flex-column">
-                        <h2 class="ps-2">[[empleado.nombre_completo]]</h2>
+                        <h2 class="ps-2" v-text="empleado.nombre_completo"></h2>
                     </div>
                     <div class="card-toolbar">
                     </div>
                 </div>
                 <!--end::Card header-->
-
                 <!--begin::Card body-->
                 <div class="card-body py-4">
                     <!--begin::Navs-->
-					<ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
-						<li class="nav-item" role="presentation">
-							<button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">Información</button>
-						</li>
-						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="puesto-tab" data-bs-toggle="tab" data-bs-target="#puesto" type="button" role="tab" aria-controls="puesto" aria-selected="false">Puesto</button>
-						</li>
-						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="nomina-tab" data-bs-toggle="tab" data-bs-target="#nomina" type="button" role="tab" aria-controls="nomina" aria-selected="false">Nómina</button>
-						</li>
+                    <ul class="nav nav-tabs nav-pills" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-							<button class="nav-link" id="papeleria-tab" data-bs-toggle="tab" data-bs-target="#papeleria" type="button" role="tab" aria-controls="papeleria" aria-selected="false">Papelería</button>
-						</li>
-						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="entrevistas-tab" data-bs-toggle="tab" data-bs-target="#entrevistas" type="button" role="tab" aria-controls="entrevistas" aria-selected="false">Entrevistas</button>
-						</li>
-						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="contratos-tab" data-bs-toggle="tab" data-bs-target="#contratos" type="button" role="tab" aria-controls="contratos" aria-selected="false">Contratos</button>
-						</li>
-						<li class="nav-item" role="presentation">
-							<button class="nav-link" id="asistencias-tab" data-bs-toggle="tab" data-bs-target="#asistencias" type="button" role="tab" aria-controls="asistencias" aria-selected="false">Asistencias</button>
-						</li>
-					</ul>
+                            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab" aria-controls="info" aria-selected="true">Información</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="puesto-tab" data-bs-toggle="tab" data-bs-target="#puesto" type="button" role="tab" aria-controls="puesto" aria-selected="false">Puesto</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="nomina-tab" data-bs-toggle="tab" data-bs-target="#nomina" type="button" role="tab" aria-controls="nomina" aria-selected="false">Nómina</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="papeleria-tab" data-bs-toggle="tab" data-bs-target="#papeleria" type="button" role="tab" aria-controls="papeleria" aria-selected="false">Papelería</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="entrevistas-tab" data-bs-toggle="tab" data-bs-target="#entrevistas" type="button" role="tab" aria-controls="entrevistas" aria-selected="false">Entrevistas</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="contratos-tab" data-bs-toggle="tab" data-bs-target="#contratos" type="button" role="tab" aria-controls="contratos" aria-selected="false">Contratos</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="asistencias-tab" data-bs-toggle="tab" data-bs-target="#asistencias" type="button" role="tab" aria-controls="asistencias" aria-selected="false">Asistencias</button>
+                        </li>
+                    </ul>
                     <!--end::Navs-->
-					<div class="tab-content" id="myTabContent">
+                    <div class="tab-content" id="myTabContent">
                         <div class="tab-pane p-5 mt-5 fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-success btn-sm" @click="isEditInfo = true" v-if="!isEditInfo">
@@ -93,230 +87,251 @@
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-sm" @click="isEditInfo = false" v-else>Cancelar</button>
                             </div>
-                            <div class="row" v-if="!isEditInfo">
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Número de empleado</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.no_empleado ?? ""]]</div>
+                            <div v-if="!isEditInfo">
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Número de empleado</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.no_empleado"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Fecha ingreso a la empresa</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.fecha_ingreso | fecha ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Fecha alta en el IMSS</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.fecha_alta_imss | fecha ]]</div>
+                                    </div>
                                 </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Fecha ingreso a la empresa</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_ingreso | fecha]]</div>
+
+                                <div class="my-4 separator separator-dashed"></div>
+                                <h3 class="mb-3">Información General</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Nombre completo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.nombre_completo"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>
+                                            <span class="form-label text-dark mb-0">Alias</span>
+                                            <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como le gusta que le digamos"></i>
+                                        </span>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.alias"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">CURP</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.curp"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">INE</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.ine"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Seguro Social(NSS)</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.nss"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>
+                                            <span class="form-label text-dark mb-0">Dirección domicilio</span>
+                                            <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como viene en la INE"></i>
+                                        </span>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.domicilio_ine"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Dirección donde vive</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.domicilio_actual"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Teléfono casa</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.telefono"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Teléfono celular</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.celular"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Email trabajo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.email_trabajo"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Email personal</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.email"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Fecha de nacimiento</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.fecha_nacimiento | fecha ]]</div>
+                                    </div>
                                 </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Fecha alta en el IMSS</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_alta_imss | fecha]]</div>
+
+                                <div class="my-4 separator separator-dashed"></div>
+                                <h3 class="mb-3">Información Fiscal</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">RFC</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.rfc"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Dirección fiscal</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.domicilio_fiscal"></div>
+                                    </div>
                                 </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <h3 class="mb-5">Información General</h3>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Nombre completo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.nombre_completo ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <span>
-                                        <span class="form-label text-dark mb-0">Alias</span>
-                                        <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como le gusta que le digamos"></i>
-                                    </span>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.alias ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">CURP</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.curp ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">INE</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.ine ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Seguro Social(NSS)</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.nss ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <span>
-                                        <span class="form-label text-dark mb-0">Dirección domicilio</span>
-                                        <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como viene en la INE"></i>
-                                    </span>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.domicilio_ine ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Dirección donde vive</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.domicilio_actual ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Teléfono casa</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.telefono ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Teléfono celular</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.celular ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Email trabajo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.email_trabajo ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Email personal</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.email ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Fecha de nacimiento</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.fecha_nacimiento | fecha]]</div>
-                                </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <h3 class="mb-5">Información Fiscal</h3>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">RFC</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.rfc ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Dirección fiscal</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.domicilio_fiscal ?? ""]]</div>
-                                </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <h3 class="mb-5">Banco</h3>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Banco</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.banco ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Número de cuenta</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.no_cuenta ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Número CLABE</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.no_clabe ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Número tarjeta</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.no_tarjeta ?? ""]]</div>
+
+                                <div class="my-4 separator separator-dashed"></div>
+                                <h3 class="mb-3">Banco</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Banco</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.banco"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Número de cuenta</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.no_cuenta"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Número CLABE</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.no_clabe"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Número tarjeta</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.no_tarjeta"></div>
+                                    </div>
                                 </div>
                             </div>
                             <form id="info_tab_form" novalidate="novalidate" class="form" action="#" @submit.prevent="" v-show="isEditInfo">
-                                <div class="row">
-                                    <div class="col-6 mb-5 fv-row">
+                                <div class="row gy-5">
+                                    <div class="col-6 fv-row">
                                         <label class="required form-label text-dark mb-0 ms-2">Número de empleado</label>
-                                        <input type="text" class="form-control" v-model="info_model.no_empleado" name="no_empleado"/>
+                                        <input type="text" class="form-control" v-model="info_model.no_empleado" name="no_empleado" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Fecha ingreso a la empresa</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" v-model="info_model.fecha_ingreso" name="fecha_ingreso" id="fecha_ingreso"/>
+                                            <input type="text" class="form-control" v-model="info_model.fecha_ingreso" name="fecha_ingreso" id="fecha_ingreso" />
                                             <span class="input-group-text">
                                                 <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Fecha alta en el IMSS</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" v-model="info_model.fecha_alta_imss" name="fecha_alta_imss" id="fecha_alta_imss"/>
+                                            <input type="text" class="form-control" v-model="info_model.fecha_alta_imss" name="fecha_alta_imss" id="fecha_alta_imss" />
                                             <span class="input-group-text">
                                                 <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                    <h3 class="mb-5">Información General</h3>
-                                    <div class="col-6 mb-5 fv-row">
+                                </div>
+
+                                <div class="my-4 separator separator-dashed"></div>
+                                <h3 class="mb-3">Información General</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6 fv-row">
                                         <label class="required form-label text-dark mb-0 ms-2">Nombre(s)</label>
-                                        <input type="text" class="form-control" v-model="info_model.nombre" name="nombre"/>
+                                        <input type="text" class="form-control" v-model="info_model.nombre" name="nombre" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="required form-label text-dark mb-0 ms-2">Apellido(s)</label>
-                                        <input type="text" class="form-control" v-model="info_model.apellidos" name="apellidos"/>
+                                        <input type="text" class="form-control" v-model="info_model.apellidos" name="apellidos" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <span>
                                             <label class="form-label text-dark mb-0 ms-2">Alias</label>
                                             <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como le gusta que le digamos"></i>
                                         </span>
-                                        <input type="text" class="form-control" v-model="info_model.alias" name="alias"/>
+                                        <input type="text" class="form-control" v-model="info_model.alias" name="alias" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">CURP</label>
-                                        <input type="text" class="form-control" v-model="info_model.curp" name="curp"/>
+                                        <input type="text" class="form-control" v-model="info_model.curp" name="curp" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">INE</label>
-                                        <input type="text" class="form-control" v-model="info_model.ine" name="ine"/>
+                                        <input type="text" class="form-control" v-model="info_model.ine" name="ine" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Seguro Social(NSS)</label>
-                                        <input type="text" class="form-control" v-model="info_model.nss" name="nss"/>
+                                        <input type="text" class="form-control" v-model="info_model.nss" name="nss" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <span>
                                             <label class="form-label text-dark mb-0 ms-2">Dirección domicilio</label>
                                             <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Como viene en la INE"></i>
                                         </span>
                                         <textarea rows="5" class="form-control" v-model="info_model.domicilio_ine" name="domicilio_ine" style="resize:none;"></textarea>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Dirección donde vive</label>
                                         <textarea rows="5" class="form-control" v-model="info_model.domicilio_actual" name="domicilio_actual" style="resize:none;"></textarea>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Teléfono casa</label>
-                                        <input type="tel" class="form-control" v-model="info_model.telefono" name="telefono"/>
+                                        <input type="tel" class="form-control" v-model="info_model.telefono" name="telefono" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Teléfono celular</label>
-                                        <input type="tel" class="form-control" v-model="info_model.celular" name="celular"/>
+                                        <input type="tel" class="form-control" v-model="info_model.celular" name="celular" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Email trabajo</label>
                                         <div class="input-group">
-                                            <input type="email" class="form-control" v-model="info_model.email_trabajo" name="email_trabajo" id="email_trabajo"/>
+                                            <input type="email" class="form-control" v-model="info_model.email_trabajo" name="email_trabajo" id="email_trabajo" />
                                             <span class="input-group-text">@</span>
                                         </div>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Email personal</label>
                                         <div class="input-group">
-                                            <input type="email" class="form-control" v-model="info_model.email" name="email" id="email"/>
+                                            <input type="email" class="form-control" v-model="info_model.email" name="email" id="email" />
                                             <span class="input-group-text">@</span>
                                         </div>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Fecha de nacimiento</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" v-model="info_model.fecha_nacimiento" name="fecha_nacimiento" id="fecha_nacimiento"/>
+                                            <input type="text" class="form-control" v-model="info_model.fecha_nacimiento" name="fecha_nacimiento" id="fecha_nacimiento" />
                                             <span class="input-group-text">
                                                 <i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                    <h3 class="mb-5">Información Fiscal</h3>
-                                    <div class="col-6 mb-5 fv-row">
+                                </div>
+
+                                <div class="my-4 separator separator-dashed"></div>
+                                <h3 class="mb-3">Información Fiscal</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">RFC</label>
-                                        <input type="text" class="form-control" v-model="info_model.rfc" name="rfc"/>
+                                        <input type="text" class="form-control" v-model="info_model.rfc" name="rfc" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Dirección fiscal</label>
                                         <textarea rows="5" class="form-control" v-model="info_model.domicilio_fiscal" name="domicilio_fiscal" style="resize:none;"></textarea>
                                     </div>
-                                    <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                    <h3 class="mb-5">Banco</h3>
-                                    <div class="col-6 mb-5 fv-row">
+                                </div>
+
+                                <div class="my-4 separator separator-dashed"></div>
+                                <h3 class="mb-3">Banco</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Banco</label>
-                                        <input type="text" class="form-control" v-model="info_model.banco" name="banco"/>
+                                        <input type="text" class="form-control" v-model="info_model.banco" name="banco" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Número de cuenta</label>
-                                        <input type="text" class="form-control" v-model="info_model.no_cuenta" name="no_cuenta"/>
+                                        <input type="text" class="form-control" v-model="info_model.no_cuenta" name="no_cuenta" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Número CLABE</label>
-                                        <input type="text" class="form-control" v-model="info_model.no_clabe" name="no_clabe"/>
+                                        <input type="text" class="form-control" v-model="info_model.no_clabe" name="no_clabe" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Número tarjeta</label>
-                                        <input type="text" class="form-control" v-model="info_model.no_tarjeta" name="no_tarjeta"/>
+                                        <input type="text" class="form-control" v-model="info_model.no_tarjeta" name="no_tarjeta" />
                                     </div>
-                                    <div class="text-center mt-10">
-                                        <button type="button" class="btn btn-primary" @click="saveEmpleadoInfo">Guardar</button>
-                                    </div>
+                                </div>
+
+                                <div class="text-center mt-10">
+                                    <button type="button" class="btn btn-primary" @click="saveEmpleadoInfo">Guardar</button>
                                 </div>
                             </form>
                         </div>
@@ -327,67 +342,69 @@
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-sm" @click="isEditPuesto = false" v-else>Cancelar</button>
                             </div>
-                            <div class="row" v-if="!isEditPuesto">
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Área de la empresa</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.area?.nombre ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Nombre del Puesto</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.puesto?.nombre ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Jefe directo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.jefe?.nombre_completo ?? ""]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <span>
-                                        <span class="form-label text-dark mb-0">Sucursal principal</span>
-                                        <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Sucursal donde desempeña sus labores"></i>
-                                    </span>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_puesto?.sucursal?.nombre ?? ""]]</div>
-                                </div>
-                                <div class="col-12 mb-5" v-if="empleado.info_puesto?.horario">
-                                    <div class="form-label text-dark mb-0">Horarios</div>
-                                    <table class="table table-sm table-rounded table-striped border align-middle table-row-bordered fs-6" id="horariosAtención">
-                                        <thead>
-                                            <tr>
-                                                <th class="p-2">Día</th>
-                                                <th class="p-2">Horario</th>
-                                                <th class="p-2">Hora de comida</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(ha, index) in empleado.info_puesto?.horario" :key="index">
-                                                <td class="fw-bold px-2">[[ ha.dia  ?? ""]]</td>
-                                                <td class="p-2">
-                                                    <div class="d-flex flex-wrap gap-1">
-                                                        <span class="badge badge-secondary" v-if="!ha.inicio">Sin horarios</span>
-                                                        <span class="badge badge-primary" v-else>[[ha.inicio]] - [[ ha.fin]] <br></span>
-                                                    </div>
-                                                </td>
-                                                <td class="p-2">
-                                                    <div class="d-flex flex-wrap gap-1">
-                                                        <span v-if="!ha.comida_inicio" class="badge badge-secondary">Sin horarios</span>
-                                                        <span class="badge badge-primary" v-else>[[ ha.comida_inicio]] - [[ ha.comida_fin]] <br></span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div v-if="!isEditPuesto">
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Área de la empresa</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.info_puesto?.area?.nombre"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Nombre del Puesto</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.info_puesto?.puesto?.nombre"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Jefe directo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.info_puesto?.jefe?.nombre_completo"></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>
+                                            <span class="form-label text-dark mb-0">Sucursal principal</span>
+                                            <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Sucursal donde desempeña sus labores"></i>
+                                        </span>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.info_puesto?.sucursal?.nombre"></div>
+                                    </div>
+                                    <div class="col-12" v-if="empleado.info_puesto?.horario">
+                                        <div class="form-label text-dark mb-0">Horarios</div>
+                                        <table class="table table-sm table-rounded table-striped border align-middle table-row-bordered fs-6" id="horariosAtención">
+                                            <thead>
+                                                <tr>
+                                                    <th class="p-2">Día</th>
+                                                    <th class="p-2">Horario</th>
+                                                    <th class="p-2">Hora de comida</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(ha, index) in empleado.info_puesto?.horario" :key="index">
+                                                    <td class="fw-bold px-2" v-text="ha.dia"></td>
+                                                    <td class="p-2">
+                                                        <div class="d-flex flex-wrap gap-1">
+                                                            <span class="badge badge-secondary" v-if="!ha.inicio">Sin horarios</span>
+                                                            <span class="badge badge-primary" v-else>[[ ha.inicio ]] - [[ ha.fin ]] <br></span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-2">
+                                                        <div class="d-flex flex-wrap gap-1">
+                                                            <span v-if="!ha.comida_inicio" class="badge badge-secondary">Sin horarios</span>
+                                                            <span class="badge badge-primary" v-else>[[ ha.comida_inicio ]] - [[ ha.comida_fin ]] <br></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <form id="puesto_tab_form" novalidate="novalidate" class="form" action="#" @submit.prevent="" v-show="isEditPuesto">
-                                <div class="row">
-                                    <div class="col-6 mb-5 fv-row">
+                                <div class="row gy-5">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Área de la empresa</label>
-                                        <input type="text" class="form-control" name="area" id="tag_area"/>
+                                        <input type="text" class="form-control" name="area" id="tag_area" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Nombre del Puesto</label>
-                                        <input type="text" class="form-control" name="puesto" id="tag_puesto"/>
+                                        <input type="text" class="form-control" name="puesto" id="tag_puesto" />
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Jefe directo</label>
                                         <v-select 
                                             v-model="puesto_model.jefe_id"
@@ -397,7 +414,7 @@
                                             data-placeholder="Selecciona un empleado">
                                         </v-select>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <span>
                                             <label class="form-label text-dark mb-0 ms-2">Sucursal principal</label>
                                             <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Sucursal donde desempeña sus labores"></i>
@@ -414,22 +431,22 @@
                                         <label class="form-label text-dark mb-0 ms-2">Horarios</label>
                                         <ul class="nav nav-tabs nav-line-tabs nav-line-tabs-2x nav-fill mb-5">
                                             <li class="nav-item mt-2" v-for="(dia, index) in dias" :key="dia">
-                                                <a class="nav-link text-active-info border-active-info border-hover-info ms-0 me-10 fw-normal" :class="index == 0 ? 'active' : ''" data-bs-toggle="tab" :href="'#kt_tab_pane_' + index">[[dia ?? ""]]</a>
+                                                <a class="nav-link text-active-info border-active-info border-hover-info ms-0 me-10 fw-normal" :class="index == 0 ? 'active' : ''" data-bs-toggle="tab" :href="'#kt_tab_pane_' + index" v-text="dia"></a>
                                             </li>
                                         </ul>
 
                                         <div class="tab-content" id="horariosTab">
                                             <div class="tab-pane fade" v-for="(dia, index) in dias" :key="dia" :class="index == 0 ? 'show active' : ''" :id="'kt_tab_pane_' + index" role="tabpanel">
-                                                <p class="form-label text-dark mb-3 fw-semibold text-gray-800">Agrega los horarios para el día: <span class="fw-bold">[[dia ?? ""]]</span></p>
+                                                <p class="form-label text-dark mb-3 fw-semibold text-gray-800">Agrega los horarios para el día: <span class="fw-bold" v-text="dia"></span></p>
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <div class="card card-bordered p-4">
                                                             <div class="row">
-                                                                <div class="col-6 mb-5 fv-row">
+                                                                <div class="col-6 fv-row">
                                                                     <label class="form-label text-dark mb-0 ms-2">Hora de Inicio</label>
                                                                     <input type="time" class="form-control form-control-solid" v-model="puesto_model.horario[index].inicio" :name="`inicio-${dia}`">
                                                                 </div>
-                                                                <div class="col-6 mb-5 fv-row">
+                                                                <div class="col-6 fv-row">
                                                                     <label class="form-label text-dark mb-0 ms-2">Hora de Fin</label>
                                                                     <input type="time" class="form-control form-control-solid" v-model="puesto_model.horario[index].fin" :name="`fin-${dia}`">
                                                                 </div>
@@ -439,11 +456,11 @@
                                                     <div class="col-6">
                                                         <div class="card card-bordered p-4">
                                                             <div class="row">
-                                                                <div class="col-6 mb-5 fv-row">
+                                                                <div class="col-6 fv-row">
                                                                     <label class="form-label text-dark mb-0 ms-2">Hora de Comida Inicio</label>
                                                                     <input type="time" class="form-control form-control-solid" v-model="puesto_model.horario[index].comida_inicio" :name="`comida_inicio-${dia}`">
                                                                 </div>
-                                                                <div class="col-6 mb-5 fv-row">
+                                                                <div class="col-6 fv-row">
                                                                     <label class="form-label text-dark mb-0 ms-2">Hora de Comida Fin</label>
                                                                     <input type="time" class="form-control form-control-solid" v-model="puesto_model.horario[index].comida_fin" :name="`comida_fin-${dia}`">
                                                                 </div>
@@ -453,11 +470,11 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
 
-                                    </div>
-                                    <div class="text-center mt-10">
-                                        <button type="button" class="btn btn-primary" @click="saveEmpleadoPuesto">Guardar</button>
-                                    </div>
+                                <div class="text-center mt-10">
+                                    <button type="button" class="btn btn-primary" @click="saveEmpleadoPuesto">Guardar</button>
                                 </div>
                             </form>
                         </div>
@@ -468,212 +485,221 @@
                                 </button>
                                 <button type="button" class="btn btn-secondary btn-sm" @click="isEditNomina = false" v-else>Cancelar</button>
                             </div>
-                            <div class="row" v-if="!isEditNomina">
-                                <h3 class="mb-5">Sueldo</h3>
-                                <div class="col-6 mb-5">
-                                    <span>
-                                        <span class="form-label text-dark mb-0">Sueldo Neto Mensual</span>
-                                        <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Incluye pago en transferencia más pago en efectivo"></i>
-                                    </span>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_mensual_neto | currency]]</div>
+                            <div v-if="!isEditNomina">
+                                <h3 class="mb-3">Sueldo</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <span>
+                                            <span class="form-label text-dark mb-0">Sueldo Neto Mensual</span>
+                                            <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Incluye pago en transferencia más pago en efectivo"></i>
+                                        </span>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_mensual_neto | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Sueldo Bruto mensual (IMSS)</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_mensual_bruto | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Sueldo mensual en efectivo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_mensual_efectivo | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span>
+                                            <span class="form-label text-dark mb-0">Sueldo Neto Quincenal</span>
+                                            <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Incluye pago en transferencia más pago en efectivo"></i>
+                                        </span>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_quincenal_neto | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Sueldo primera quincena del mes en efectivo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_quincena1_efectivo | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Sueldo segunda quincena del mes en efectivo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_quincena2_efectivo | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Sueldo diario (IMSS)</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_diario | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Sueldo diario integrado (IMSS)</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.sueldo_diario_integrado | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Gasto del 3% Nómina</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.gasto_nomina | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Gasto de Aportación Patronal</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.gasto_patronal | currency ]]</div>
+                                    </div>
                                 </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Sueldo Bruto mensual (IMSS)</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_mensual_bruto | currency]]</div>
+
+                                <div class="my-8 separator separator-dashed"></div>
+                                <h3 class="mb-3">Prestaciones</h3>
+                                <div class="row gy-5">
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Vehículo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_vehiculo | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Gasolina</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_gasolina | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Celular</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_celular | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Alimentos</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_alimentos | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Seguro Médico Menor</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_seguro_medico_menor | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Cursos Desarrollo Profesional</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_cursos_profesional | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Curso Desarrollo Personal</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_cursos_personal | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Prima Vacacional</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_prima_vacacional | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Aguinaldo</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_aguinaldo | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">PTU</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_ptu | currency ]]</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-label text-dark mb-0">Otros</div>
+                                        <div class="py-2 px-4 border border-0 bg-light rounded">[[ empleado.info_nomina?.pres_otros | currency ]]</div>
+                                    </div>
                                 </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Sueldo mensual en efectivo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_mensual_efectivo | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <span>
-                                        <span class="form-label text-dark mb-0">Sueldo Neto Quincenal</span>
-                                        <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Incluye pago en transferencia más pago en efectivo"></i>
-                                    </span>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_quincenal_neto | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Sueldo primera quincena del mes en efectivo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_quincena1_efectivo | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Sueldo segunda quincena del mes en efectivo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_quincena2_efectivo | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Sueldo diario (IMSS)</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_diario | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Sueldo diario integrado (IMSS)</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.sueldo_diario_integrado | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Gasto del 3% Nómina</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.gasto_nomina | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Gasto de Aportación Patronal</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.gasto_patronal | currency]]</div>
-                                </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <h3 class="mb-5">Prestaciones</h3>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Vehículo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_vehiculo | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Gasolina</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_gasolina | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Celular</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_celular | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Alimentos</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_alimentos | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Seguro Médico Menor</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_seguro_medico_menor | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Cursos Desarrollo Profesional</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_cursos_profesional | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Curso Desarrollo Personal</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_cursos_personal | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Prima Vacacional</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_prima_vacacional | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Aguinaldo</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_aguinaldo | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">PTU</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_ptu | currency]]</div>
-                                </div>
-                                <div class="col-6 mb-5">
-                                    <div class="form-label text-dark mb-0">Otros</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.info_nomina?.pres_otros | currency]]</div>
-                                </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <div class="col-12 mb-5 fv-row text-center">
-                                    <span>
-                                        <span class="fw-bold fs-4 ms-2">Gasto total de Nómina</span>
-                                        <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Suma sueldo bruto + impuestos + aportaciones patronales + pago en efectivo + prestaciones"></i>
-                                    </span>
-                                    <div class="fs-5 px-4">[[gastoTotalNomina | currency]]</div>
+
+                                <div class="my-8 separator separator-dashed"></div>
+                                <div class="row gy-5">
+                                    <div class="col-12 fv-row text-center">
+                                        <span>
+                                            <span class="fw-bold fs-4 ms-2">Gasto total de Nómina</span>
+                                            <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Suma sueldo bruto + impuestos + aportaciones patronales + pago en efectivo + prestaciones"></i>
+                                        </span>
+                                        <div class="fs-5 px-4">[[ gastoTotalNomina | currency ]]</div>
+                                    </div>
                                 </div>
                             </div>
                             <form id="nomina_tab_form" novalidate="novalidate" class="form" action="#" @submit.prevent="" v-show="isEditNomina">
-                                <div class="row">
-                                    <div class="col-6 mb-5 fv-row">
+                                <div class="row gy-5">
+                                    <div class="col-6 fv-row">
                                         <span>
                                             <label class="form-label text-dark mb-0 ms-2">Sueldo Neto Mensual</label>
                                             <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Incluye pago en transferencia más pago en efectivo"></i>
                                         </span>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_mensual_neto" name="suelto_neto_mensual"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Sueldo Bruto mensual (IMSS)</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_mensual_bruto" name="sueldo_bruto_mensual"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Sueldo mensual en efectivo</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_mensual_efectivo" name="sueldo_efectivo_mensual"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <span>
                                             <label class="form-label text-dark mb-0 ms-2">Sueldo Neto Quincenal</label>
                                             <i class="ki-solid ki-information-5 text-gray-400" data-bs-toggle="tooltip" data-bs-placement="top" title="Incluye pago en transferencia más pago en efectivo"></i>
                                         </span>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_quincenal_neto" name="sueldo_neto_quincenal"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Sueldo primera quincena del mes en efectivo</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_quincena1_efectivo" name="sueldo_efectivo_quincena1"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Sueldo segunda quincena del mes en efectivo</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_quincena2_efectivo" name="sueldo_efectivo_quincena2"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Sueldo diario (IMSS)</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_diario" name="sueldo_diario"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Sueldo diario integrado (IMSS)</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.sueldo_diario_integrado" name="sueldo_diario_integrado"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Gasto del 3% Nómina</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.gasto_nomina" name="gasto_nomina"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Gasto de Aportación Patronal</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.gasto_patronal" name="gasto_aportacion"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Vehículo</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_vehiculo" name="vehiculo"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Gasolina</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_gasolina" name="gasolina"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Celular</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_celular" name="celular"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Alimentos</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_alimentos" name="alimentos"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Seguro Médico Menor</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_seguro_medico_menor" name="seguro_menor"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Cursos Desarrollo Profesional</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_cursos_profesional" name="cursos_profesional"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Curso Desarrollo Personal</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_cursos_personal" name="cursos_personal"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Prima Vacacional</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_prima_vacacional" name="prima_vacacional"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Aguinaldo</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_aguinaldo" name="aguinaldo"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">PTU</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_ptu" name="ptu"></v-currency>
                                     </div>
-                                    <div class="col-6 mb-5 fv-row">
+                                    <div class="col-6 fv-row">
                                         <label class="form-label text-dark mb-0 ms-2">Otros</label>
                                         <v-currency class="form-control" placeholder="$" v-model="nomina_model.pres_otros" name="otros"></v-currency>
                                     </div>
-                                    <div class="text-center mt-10">
-                                        <button type="button" class="btn btn-primary" @click="saveEmpleadoNomina">Guardar</button>
-                                    </div>
+                                </div>
+
+                                <div class="text-center mt-10">
+                                    <button type="button" class="btn btn-primary" @click="saveEmpleadoNomina">Guardar</button>
                                 </div>
                             </form>
                         </div>
                         <div class="tab-pane p-5 mt-5 fade" id="papeleria" role="tabpanel" aria-divledby="papeleria-tab">
-                            <div class="row">
-                                <div class="col-6 mb-5" v-for="(doc, index) in papeleria_docs">
+                            <div class="row gy-5">
+                                <div class="col-6" v-for="(doc, index) in papeleria_docs">
                                     <form :id="`archivos_${doc.slug}_form`" novalidate="novalidate" class="form" action="#" @submit.prevent="">
-                                        <div class="form-label text-dark mb-0">[[doc.title]]</div>
+                                        <div class="form-label text-dark mb-0" v-text="doc.title"></div>
                                         <div class="text-end mb-5" v-if="edit[doc.slug]">
                                             <button type="button" class="btn btn-primary btn-sm me-2" @click="saveFile(doc)">Guardar</button>
                                             <button type="button" class="btn btn-secondary btn-sm" @click="edit[doc.slug] = false">Cancelar</button>
@@ -687,7 +713,7 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]"/>
+                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]" />
                                             <v-file :file="doc.archivo" class="border-1" v-else-if="doc.id"></v-file>
                                         </div>
                                     </form>
@@ -695,10 +721,10 @@
                             </div>
                         </div>
                         <div class="tab-pane p-5 mt-5 fade" id="entrevistas" role="tabpanel" aria-divledby="entrevistas-tab">
-                            <div class="row">
-                                <div class="col-6 mb-5" v-for="(doc, index) in entrevistas_docs">
+                            <div class="row gy-5">
+                                <div class="col-6" v-for="(doc, index) in entrevistas_docs">
                                     <form :id="`archivos_${doc.slug}_form`" novalidate="novalidate" class="form" action="#" @submit.prevent="">
-                                        <div class="form-label text-dark mb-0">[[doc.title]]</div>
+                                        <div class="form-label text-dark mb-0" v-text="doc.title"></div>
                                         <div class="text-end mb-5" v-if="edit[doc.slug]">
                                             <button type="button" class="btn btn-primary btn-sm me-2" @click="saveFile(doc)">Guardar</button>
                                             <button type="button" class="btn btn-secondary btn-sm" @click="edit[doc.slug] = false">Cancelar</button>
@@ -712,7 +738,7 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]"/>
+                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]" />
                                             <v-file :file="doc.archivo" class="border-1" v-else-if="doc.id"></v-file>
                                         </div>
                                     </form>
@@ -720,11 +746,11 @@
                             </div>
                         </div>
                         <div class="tab-pane p-5 mt-5 fade" id="contratos" role="tabpanel" aria-divledby="contratos-tab">
-                            <div class="row">
-                                <h3 class="mb-5">1 Mes</h3>
-                                <div class="col-6 mb-5" v-for="(doc, index) in contratos_docs_mes1">
+                            <h3 class="mb-3">1 Mes</h3>
+                            <div class="row gy-5">
+                                <div class="col-6" v-for="(doc, index) in contratos_docs_mes1">
                                     <form :id="`archivos_${doc.slug}_form`" novalidate="novalidate" class="form" action="#" @submit.prevent="">
-                                        <div class="form-label text-dark mb-0">[[doc.title]]</div>
+                                        <div class="form-label text-dark mb-0" v-text="doc.title"></div>
                                         <div class="text-end mb-5" v-if="edit[doc.slug]">
                                             <button type="button" class="btn btn-primary btn-sm me-2" @click="saveFile(doc)">Guardar</button>
                                             <button type="button" class="btn btn-secondary btn-sm" @click="edit[doc.slug] = false">Cancelar</button>
@@ -738,16 +764,19 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]"/>
+                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]" />
                                             <v-file :file="doc.archivo" class="border-1" v-else-if="doc.id"></v-file>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <h3 class="mb-5">3 Meses</h3>
-                                <div class="col-6 mb-5" v-for="(doc, index) in contratos_docs_mes3">
+                            </div>
+
+                            <div class="my-8 separator separator-dashed"></div>
+                            <h3 class="mb-3">3 Meses</h3>
+                            <div class="row gy-5">
+                                <div class="col-6" v-for="(doc, index) in contratos_docs_mes3">
                                     <form :id="`archivos_${doc.slug}_form`" novalidate="novalidate" class="form" action="#" @submit.prevent="">
-                                        <div class="form-label text-dark mb-0">[[doc.title]]</div>
+                                        <div class="form-label text-dark mb-0" v-text="doc.title"></div>
                                         <div class="text-end mb-5" v-if="edit[doc.slug]">
                                             <button type="button" class="btn btn-primary btn-sm me-2" @click="saveFile(doc)">Guardar</button>
                                             <button type="button" class="btn btn-secondary btn-sm" @click="edit[doc.slug] = false">Cancelar</button>
@@ -761,16 +790,19 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]"/>
+                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]" />
                                             <v-file :file="doc.archivo" class="border-1" v-else-if="doc.id"></v-file>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <h3 class="mb-5">1 Año</h3>
-                                <div class="col-6 mb-5" v-for="(doc, index) in contratos_docs_ano1">
+                            </div>
+
+                            <div class="my-8 separator separator-dashed"></div>
+                            <h3 class="mb-3">1 Año</h3>
+                            <div class="row gy-5">
+                                <div class="col-6" v-for="(doc, index) in contratos_docs_ano1">
                                     <form :id="`archivos_${doc.slug}_form`" novalidate="novalidate" class="form" action="#" @submit.prevent="">
-                                        <div class="form-label text-dark mb-0">[[doc.title]]</div>
+                                        <div class="form-label text-dark mb-0" v-text="doc.title"></div>
                                         <div class="text-end mb-5" v-if="edit[doc.slug]">
                                             <button type="button" class="btn btn-primary btn-sm me-2" @click="saveFile(doc)">Guardar</button>
                                             <button type="button" class="btn btn-secondary btn-sm" @click="edit[doc.slug] = false">Cancelar</button>
@@ -784,15 +816,18 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]"/>
+                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]" />
                                             <v-file :file="doc.archivo" class="border-1" v-else-if="doc.id"></v-file>
                                         </div>
                                     </form>
                                 </div>
-                                <div class="separator mt-3 mb-5 border-gray-300"></div>
-                                <div class="col-6 mb-5" v-for="(doc, index) in contratos_docs_ano1">
+                            </div>
+
+                            <div class="my-8 separator separator-dashed"></div>
+                            <div class="row gy-5">
+                                <div class="col-6" v-for="(doc, index) in contratos_docs_ano1">
                                     <form :id="`archivos_${doc.slug}_form`" novalidate="novalidate" class="form" action="#" @submit.prevent="">
-                                        <div class="form-label text-dark mb-0">[[doc.title]]</div>
+                                        <div class="form-label text-dark mb-0" v-text="doc.title"></div>
                                         <div class="text-end mb-5" v-if="edit[doc.slug]">
                                             <button type="button" class="btn btn-primary btn-sm me-2" @click="saveFile(doc)">Guardar</button>
                                             <button type="button" class="btn btn-secondary btn-sm" @click="edit[doc.slug] = false">Cancelar</button>
@@ -806,7 +841,7 @@
                                             </button>
                                         </div>
                                         <div>
-                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]"/>
+                                            <input type="file" class="form-control" name="archivo" v-if="edit[doc.slug]" />
                                             <v-file :file="doc.archivo" class="border-1" v-else-if="doc.id"></v-file>
                                         </div>
                                     </form>
@@ -814,66 +849,65 @@
                             </div>
                         </div>
                         <div class="tab-pane p-5 mt-5 fade" id="asistencias" role="tabpanel" aria-divledby="asistencias-tab">
-                            <div class="mb-5">
+                            <div class="row">
                                 <div class="form-label text-dark mb-0">Entradas y salidas diarias</div>
-                                    <div class="table-responsive">
-                                        <table id="kt_table_scroll" class="table table-sm table-rounded table-bordered">
-                                            <thead>
-                                                <tr class="fw-bold fs-6 text-gray-800">
-                                                    <th class="p-2 align-middle text-center">Fecha</th>
-                                                    <th class="p-2 align-middle text-center">Entrada</th>
-                                                    <th class="p-2 align-middle text-center">Salida</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(item, index) in formatAsistencias" :key="index">
-                                                    <td class="px-2 text-center align-middle">[[ item.fecha, null, 'YYYY-MM-DD' | fecha ]]</td>
-                                                    <td class="text-center align-middle">
-                                                        <div class="px-2 text-center align-middle">[[ item.entrada, null, 'YYYY-MM-DD HH:mm:ss' | time ]]</div>
-                                                        <img style="margin: 0 auto;" class="mw-100 mh-100px" :src="'/' + item.foto_entrada"/>
-                                                    </td>
-                                                    <td class="text-center align-middle">
-                                                        <div class="px-2">[[ item.salida, null, 'YYYY-MM-DD HH:mm:ss' | time ]]</div>
-                                                        <img style="margin: 0 auto;" class="mw-100 mh-100px" :src="'/' + item.foto_salida"/>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table id="kt_table_scroll" class="table table-sm table-rounded table-bordered">
+                                        <thead>
+                                            <tr class="fw-bold fs-6 text-gray-800">
+                                                <th class="p-2 align-middle text-center">Fecha</th>
+                                                <th class="p-2 align-middle text-center">Entrada</th>
+                                                <th class="p-2 align-middle text-center">Salida</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item, index) in formatAsistencias" :key="index">
+                                                <td class="px-2 text-center align-middle">[[ item.fecha, null, 'YYYY-MM-DD' | fecha ]]</td>
+                                                <td class="text-center align-middle">
+                                                    <div class="px-2 text-center align-middle">[[ item.entrada, null, 'YYYY-MM-DD HH:mm:ss' | time ]]</div>
+                                                    <img style="margin: 0 auto;" class="mw-100 mh-100px" :src="'/storage/' + item.foto_entrada" />
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    <div class="px-2">[[ item.salida, null, 'YYYY-MM-DD HH:mm:ss' | time ]]</div>
+                                                    <img style="margin: 0 auto;" class="mw-100 mh-100px" :src="'/storage/' + item.foto_salida" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                       
-                            <div class="row">
-                                <div class="col-6 mb-5 fv-row">
+
+                            <div class="my-8 separator separator-dashed"></div>
+                            <div class="row gy-5">
+                                <div class="col-6 fv-row">
                                     <div class="form-label text-dark mb-0">Llegadas tarde</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.llegadas_tarde ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.asistencias?.llegadas_tarde ?? '0'"></div>
                                 </div>
-                                <div class="col-6 mb-5 fv-row">
+                                <div class="col-6 fv-row">
                                     <div class="form-label text-dark mb-0">Faltas justificadas</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.faltas_justificadas ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.asistencias?.faltas_justificadas ?? '0'"></div>
                                 </div>
-                                <div class="col-6 mb-5 fv-row">
+                                <div class="col-6 fv-row">
                                     <div class="form-label text-dark mb-0">Faltas injustificadas</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.faltas_injustificadas ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.asistencias?.faltas_injustificadas ?? '0'"></div>
                                 </div>
-                                <div class="col-6 mb-5 fv-row">
+                                <div class="col-6 fv-row">
                                     <div class="form-label text-dark mb-0">Horas extras</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.horas_extra ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.asistencias?.horas_extra ?? '0'"></div>
                                 </div>
-                                <div class="col-6 mb-5 fv-row">
+                                <div class="col-6 fv-row">
                                     <div class="form-label text-dark mb-0">Días festivos trabajados</div>
-                                    <div class="py-2 px-4 border border-0 bg-light rounded">[[empleado.asistencias?.festivos ?? ""]]</div>
+                                    <div class="py-2 px-4 border border-0 bg-light rounded" v-text="empleado.asistencias?.festivos ?? '0'"></div>
                                 </div>
                             </div>
                         </div>
-					</div>
+                    </div>
                 </div>
                 <!--end::Card body-->
             </div>
             <!--end::Card-->
         </div>
         <!--end::Content-->
-
     </div>
 @endsection
 
@@ -1382,7 +1416,7 @@
                 getAsistencias(){
                     let vm = this;
                     $.get(
-                        '/api/empleados/obtener-asistencias/1',
+                        `/api/empleados/obtener-asistencias/${vm.empleado.id}`,
                         res => {
                             if(res.success){
                                 vm.asistencias = res.data;
