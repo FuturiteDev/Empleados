@@ -118,8 +118,6 @@ class EmpleadosController extends Controller
     public function saveEmpleado(Request $request)
     {
         try {
-
-
             // Validaciones
             $validator = Validator::make($request->all(), [
                 'no_empleado' => 'required',
@@ -621,12 +619,23 @@ class EmpleadosController extends Controller
     public function reportesAsistencias(Request $request)
     {
         try {
-            $fecha_inicio = $request->fecha_inicio;
-            $fecha_fin = $request->fecha_fin;
+            $fecha_inicio_raw = $request->input('fecha_inicio');
+            $fecha_fin_raw = $request->input('fecha_fin');
+
+            if (!$fecha_inicio_raw || !$fecha_fin_raw) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Debe proporcionar fecha de inicio y fecha de fin.',
+                    'results' => null
+                ], 400);
+            }
+
+            $fecha_inicio = Carbon::parse($fecha_inicio_raw)->startOfDay();
+            $fecha_fin = Carbon::parse($fecha_fin_raw)->endOfDay();
             $sucursal_id = $request->sucursal_id;
 
             $query = $this->asistencia
-                ->whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+                ->whereBetween('fecha', [$fecha_inicio->toDateString(), $fecha_fin->toDateString()])
                 ->where('motivo', 0);
 
             if (!empty($sucursal_id)) {
@@ -635,14 +644,14 @@ class EmpleadosController extends Controller
 
             $lista = $query->orderBy('fecha')->orderBy('hora')->get();
 
-            $lista_x_empleado = $lista->groupBy(function ($item) {
-                return $item->empleado_id . '_' . $item->fecha;
-            });
-
             $empleados_ids = $lista->pluck('empleado_id')->unique();
-            $empleados = $this->empleados->with('infoPuesto')->whereIn('id', $empleados_ids)->get()->keyBy('id');
+            $empleados = $this->empleados
+                ->with('infoPuesto')
+                ->whereIn('id', $empleados_ids)
+                ->get()
+                ->keyBy('id');
 
-            $periodo =  CarbonPeriod::create($fecha_inicio, $fecha_fin);
+            $periodo = CarbonPeriod::create($fecha_inicio, $fecha_fin);
             $results = [];
 
             $asistencias_por_empleado = $lista->groupBy('empleado_id');
@@ -670,12 +679,13 @@ class EmpleadosController extends Controller
 
                     if ($registroDia) {
                         $asistencias++;
-                        $primerRegistro = $registroDia->first();
+
+                        $primerRegistro = $registroDia->sortBy('hora')->first();
+
                         $horaEntradaEmpleado = Carbon::createFromFormat('H:i:s', $primerRegistro->hora);
                         $horaConfigurada = Carbon::createFromFormat('H:i', $config_dia['inicio']);
 
                         $diferenciaMinutos = $horaConfigurada->diffInMinutes($horaEntradaEmpleado, false);
-
 
                         if ($diferenciaMinutos >= 10) {
                             $retardoUnidades = ceil($diferenciaMinutos / 70);
@@ -688,10 +698,10 @@ class EmpleadosController extends Controller
 
                 $results[] = [
                     'no_empleado' => $empleado->no_empleado,
-                    'nombre' => $empleado->nombre_completo,
+                    'nombre'      => $empleado->nombre_completo,
                     'asistencias' => $asistencias,
-                    'retardos' => $retardos,
-                    'faltas' => $faltas,
+                    'retardos'    => $retardos,
+                    'faltas'      => $faltas,
                 ];
             }
 
@@ -700,11 +710,11 @@ class EmpleadosController extends Controller
                 'results' => $results,
             ]);
         } catch (\Exception $e) {
-            Log::info("EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | " . $e->getLine());
+            Log::info("EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | Linea: " . $e->getLine());
 
             return response()->json([
                 'success' => false,
-                'message' => "[ERROR] EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | " . $e->getLine(),
+                'message' => "[ERROR] EmpleadosController->reportesAsistencias() | " . $e->getMessage() . " | Linea: " . $e->getLine(),
                 'results' => null
             ], 500);
         }
