@@ -29,5 +29,5 @@ Route::prefix('empleados')->group(function () {
     Route::post('/registrar-asistencia', [EmpleadosController::class, 'saveAsistencia'])->name('saveAsistencia');
     Route::get('/obtener-asistencias/{empelado_id}', [EmpleadosController::class, 'historialAsistencias'])->name('historialAsistencias');
 
-    Route::get('/reportes/asistencias', [EmpleadosController::class, 'reportesAsistencias'])->name('reportesAsistencias');
+    Route::post('/reportes/asistencias', [EmpleadosController::class, 'reportesAsistencias'])->name('reportesAsistencias');
 });

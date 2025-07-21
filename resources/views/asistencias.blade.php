@@ -35,9 +35,9 @@
             <div class="card card-flush" id="content-card">
                 <!--begin::Card header-->
                 <div class="d-flex gap-5 justify-content-end px-10 py-6">
-                    <div>
+                    <div class="min-w-250px">
                         <div class="input-group">
-                            <input class="form-control" id="picker_range"/>
+                            <input class="form-control" id="picker_range" name="fecha"/>
                             <span class="input-group-text"><i class="fas fa-calendar fs-2"></i></span>
                         </div>
                     </div>
@@ -78,6 +78,7 @@
     <script src="/common_assets/js/vue_components/v-select.js"></script>
     <script src="/common_assets/js/vue_components/v-currency.js"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
     <script>
         const app = new Vue({
@@ -90,22 +91,22 @@
                 options: {
                     headings: {
                         no_empleado: 'Número empleado',
-                        nombre_completo: 'Empleado',
+                        nombre: 'Empleado',
                         asistencias: 'asistencias',
                         retardos: 'retardos',
                         faltas: 'faltas',
                     },
                     columnsClasses: {
                         no_empleado: 'align-middle px-2 ',
-                        nombre_completo: 'align-middle ',
+                        nombre: 'align-middle ',
                         asistencias: 'align-middle text-center ',
                         retardos: 'align-middle text-center ',
                         faltas: 'align-middle text-center ',
                     },
-                    sortable: ['no_empleado', 'nombre_completo', 'asistencias', 'retardos', 'faltas'],
-                    filterable: ['no_empleado', 'nombre_completo'],
+                    sortable: ['no_empleado', 'nombre', 'asistencias', 'retardos', 'faltas'],
+                    filterable: ['no_empleado', 'nombre'],
                     skin: 'table table-sm table-rounded table-striped border align-middle table-row-bordered fs-6',
-                    columnsDropdown: true,
+                    columnsDropdown: false,
                     resizableColumns: false,
                     sortIcon: {
                         base: 'ms-3 fas',
@@ -124,6 +125,10 @@
                         loading: "Cargando...",
                         columns: "Columnas",
                     },
+                    orderBy: {
+                        ascending: true,
+                        column: 'no_empleado'
+                    },
                 },
                 filter_sucursal: null,
                 filter_fecha_inicio: null,
@@ -141,7 +146,6 @@
                 if (container) {
                     vm.blockUI = new KTBlockUI(container);
                 }
-                vm.getEmpleados(true);
                 vm.getSucursales();
                 vm.initPickers();
             },
@@ -159,6 +163,12 @@
                             vm.filter_fecha_inicio = moment(selectedDates[0]).format("YYYY-MM-D");
                             vm.filter_fecha_fin = moment(selectedDates[1]).format("YYYY-MM-DD");
                         },
+                    });
+
+                    vm.picker_entrega.setDate([moment().format("YYYY-MM-D"), moment().subtract(7, 'day').format("YYYY-MM-D")], true);
+
+                    vm.$nextTick(() => {
+                        vm.getEmpleados(true);                        
                     });
                 },
                 getEmpleados(showLoader) {
@@ -228,7 +238,7 @@
 
                     var wb = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(wb, ws, "Asistencias");
-                    XLSX.writeFile(wb, "asistencias_" + moment().format('YYYY_MM_DD_HH_mm') + ".xlsx");
+                    XLSX.writeFile(wb, "asistencias_" + vm.filter_fecha_inicio + "_" + vm.filter_fecha_fin + ".xlsx");
                 },
             },
             computed: {
