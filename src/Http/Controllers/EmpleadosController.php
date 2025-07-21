@@ -19,6 +19,7 @@ use Ongoing\Sucursales\Repositories\SucursalesRepositoryEloquent;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Ongoing\Empleados\Repositories\EmpleadoPuestoRepositoryEloquent;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -29,19 +30,22 @@ class EmpleadosController extends Controller
     protected $puestos;
     protected $asistencia;
     protected $sucursales;
+    protected $empleadoPuesto;
 
     public function __construct(
         EmpleadosRepositoryEloquent $empleados,
         AreasRepositoryEloquent $areas,
         PuestosRepositoryEloquent $puestos,
         EmpleadosAsistenciaRepositoryEloquent $asistencia,
-        SucursalesRepositoryEloquent $sucursales
+        SucursalesRepositoryEloquent $sucursales,
+        EmpleadoPuestoRepositoryEloquent $empleadoPuesto
     ) {
         $this->empleados = $empleados;
         $this->areas = $areas;
         $this->puestos = $puestos;
         $this->asistencia = $asistencia;
         $this->sucursales = $sucursales;
+        $this->empleadoPuesto = $empleadoPuesto;
     }
 
     function index()
@@ -122,7 +126,8 @@ class EmpleadosController extends Controller
             $validator = Validator::make($request->all(), [
                 'no_empleado' => 'required',
                 'nombre' => 'required',
-                'apellidos' => 'required'
+                'apellidos' => 'required',
+                'horario' => 'nullable|array'
             ]);
 
             if ($validator->fails()) {
@@ -133,7 +138,8 @@ class EmpleadosController extends Controller
                 ]);
             }
 
-            $values = $request->except(['id']);
+            $values = $request->except(['id', 'horario']);
+            $horario = $request->input('horario', []);
 
             $empleadoExistente = $this->empleados->where('no_empleado', $values['no_empleado'])
                 ->where('estatus', 1)
@@ -151,15 +157,30 @@ class EmpleadosController extends Controller
                 $empleado = $this->empleados->find($request->id);
                 $empleado->update($values);
                 $empleado->refresh();
+            } else {
+                $empleado = $this->empleados->create($values);
+            }
 
+            if (!empty($horario)) {
+                $this->empleadoPuesto->updateOrCreate(
+                    ['empleado_id' => $empleado->id],
+                    [
+                        'area_id' => null,
+                        'puesto_id' => null,
+                        'jefe_id' => null,
+                        'sucursal_id' => null,
+                        'horario' => $horario
+                    ]
+                );
+            }
+
+            if ($request->id) {
                 return response()->json([
                     'success' => true,
-                    'message' => "Empleado registrado con éxito.",
+                    'message' => "Empleado actualizado con éxito.",
                     'empleado' => $empleado
                 ], 200);
             } else {
-                $empleado = $this->empleados->create($values);
-
                 $empleados = $this->getAll()->getData(true);
                 return response()->json([
                     'success' => true,
@@ -177,6 +198,7 @@ class EmpleadosController extends Controller
             ], 500);
         }
     }
+
 
     /**
      * /api/empleados/delete
