@@ -66,6 +66,11 @@ class Empleado extends Model implements Transformable
         return $this->hasMany(EmpleadoArchivos::class)->where('estatus', 1);
     }
 
+    public function asistencias()
+    {
+        return $this->hasMany(EmpleadosAsistencia::class);
+    }
+
     public function jefe()
     {
         return $this->hasOneThrough(

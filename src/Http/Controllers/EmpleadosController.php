@@ -667,13 +667,13 @@ class EmpleadosController extends Controller
             $lista = $query->orderBy('fecha')->orderBy('hora')->get();
 
             $empleados_ids = $lista->pluck('empleado_id')->unique();
+
             $empleados = $this->empleados
                 ->with('infoPuesto')
                 ->whereIn('id', $empleados_ids)
                 ->get()
                 ->keyBy('id');
 
-            $periodo = CarbonPeriod::create($fecha_inicio, $fecha_fin);
             $results = [];
 
             $asistencias_por_empleado = $lista->groupBy('empleado_id');
@@ -688,16 +688,26 @@ class EmpleadosController extends Controller
                 $retardos = 0;
                 $faltas = 0;
 
-                foreach ($periodo as $fechaObj) {
+                foreach (CarbonPeriod::create($fecha_inicio, $fecha_fin) as $fechaObj) {
                     $fecha = $fechaObj->format('Y-m-d');
                     $diaNombre = ucfirst($fechaObj->locale('es')->isoFormat('dddd'));
 
                     $config_dia = collect($horario_config)->firstWhere('dia', $diaNombre);
-                    if (!$config_dia || empty($config_dia['inicio'])) {
+                    $registroDia = $asistencias_por_dia[$fecha] ?? null;
+
+                    $numeroDia = $fechaObj->isoFormat('E');
+                    if (($numeroDia > 5) && (!$config_dia || empty($config_dia['inicio']))) {
                         continue;
                     }
 
-                    $registroDia = $asistencias_por_dia[$fecha] ?? null;
+                    if (!$config_dia || empty($config_dia['inicio'])) {
+                        if ($registroDia) {
+                            $asistencias++;
+                        } else {
+                            $faltas++;
+                        }
+                        continue;
+                    }
 
                     if ($registroDia) {
                         $asistencias++;
