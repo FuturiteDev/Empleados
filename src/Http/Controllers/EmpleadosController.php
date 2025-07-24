@@ -666,13 +666,22 @@ class EmpleadosController extends Controller
 
             $lista = $query->orderBy('fecha')->orderBy('hora')->get();
 
-            $empleados_ids = $lista->pluck('empleado_id')->unique();
+            if (!empty($sucursal_id)) {
+                $empleados_ids = $lista->pluck('empleado_id')->unique();
 
-            $empleados = $this->empleados
-                ->with('infoPuesto')
-                ->whereIn('id', $empleados_ids)
-                ->get()
-                ->keyBy('id');
+                $empleados = $this->empleados
+                    ->with('infoPuesto')
+                    ->whereIn('id', $empleados_ids)
+                    ->where("estatus", 1)
+                    ->get()
+                    ->keyBy('id');
+            } else {
+                $empleados = $this->empleados
+                    ->with('infoPuesto')
+                    ->where("estatus", 1)
+                    ->get()
+                    ->keyBy('id');
+            }
 
             $results = [];
 
@@ -719,8 +728,8 @@ class EmpleadosController extends Controller
 
                         $diferenciaMinutos = $horaConfigurada->diffInMinutes($horaEntradaEmpleado, false);
 
-                        if ($diferenciaMinutos >= 10) {
-                            $retardoUnidades = ceil($diferenciaMinutos / 70);
+                        if ($diferenciaMinutos > 10) {
+                            $retardoUnidades = ceil(($diferenciaMinutos - 10) / 60);
                             $retardos += $retardoUnidades;
                         }
                     } else {
