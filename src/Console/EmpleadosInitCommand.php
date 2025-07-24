@@ -51,6 +51,20 @@ class EmpleadosInitCommand extends Command
                         'url' => '/empleados',
                         'orden' => 1,
                         'permisos' => []
+                    ],
+                    [
+                        'descripcion' => 'Reportes',
+                        'url' => '/',
+                        'orden' => 2,
+                        'permisos' => [],
+                        'submenu' => [
+                            [
+                                'descripcion' => 'Asistencias',
+                                'url' => '/empleados/asistencias',
+                                'orden' => 1,
+                                'permisos' => []
+                            ]
+                        ]
                     ]
                 ],
             ]
